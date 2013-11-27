@@ -50,7 +50,7 @@ Simple Example
 	glitch(my_image_data, parameters, drawGlitchedImageData);
 ```
 
-There are more detailed examples available in the ``examples/`` folder.
+There are more detailed examples available in the [example/](example) folder.
 
 Loading
 -------
