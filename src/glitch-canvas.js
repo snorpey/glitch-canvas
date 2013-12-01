@@ -28,7 +28,7 @@
 
 		var base64_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 		var base64_map = base64_chars.split( '' );
-		var reversed_base64_map = { };
+		var reversed_base64_map = { };
 
 		var params;
 		var base64;
@@ -42,16 +42,16 @@
 
 		base64_map.forEach( function ( val, key ) { reversed_base64_map[val] = key; } );
 
-		function glitchImageData ( image_data, glitch_parameters, callback )
+		function glitchImageData ( image_data, parameters, callback )
 		{
 			if (
-				image_data &&
-				glitch_parameters &&
-				callback
+				isValidImageData( image_data ) &&
+				checkType( parameters, 'parameters', 'object' ) &&
+				checkType( callback, 'callback', 'function' )
 			)
 			{
 				// normalize parameters
-				params = getNormalizedParameters( glitch_parameters );
+				params = getNormalizedParameters( parameters );
 				
 				// resize temp canvases to size of imagedata object
 				resizeCanvas( canvas_1, image_data );
@@ -239,11 +239,68 @@
 		function getNormalizedParameters ( parameters )
 		{
 			return {
-				seed:       ( parameters.seed       || 25 ) / 100,
-				quality:    ( parameters.quality    || 30 ) / 100,
-				amount:     ( parameters.amount     || 35 ) / 100,
-				iterations: ( parameters.iterations || 20 )
+				seed:       ( parameters.seed       || 0 ) / 100,
+				quality:    ( parameters.quality    || 0 ) / 100,
+				amount:     ( parameters.amount     || 0 ) / 100,
+				iterations: ( parameters.iterations || 0 )
 			};
+		}
+
+		function isValidImageData( image_data )
+		{
+			if (
+				checkType( image_data, 'image_data', 'object' ) &&
+				checkType( image_data.width, 'image_data.width', 'number' ) &&
+				checkType( image_data.height, 'image_data.height', 'number' ) &&
+				checkType( image_data.data, 'image_data.data', 'object' ) &&
+				checkType( image_data.data.length, 'image_data.data.length', 'number' ) &&
+				checkNumber( image_data.data.length, 'image_data.data.length', isPositive, '> 0' )
+			)
+			{
+				return true;
+			}
+
+			else
+			{
+				return false;
+			}
+		}
+
+		function checkType( it, name, expected_type )
+		{
+			if ( typeof it === expected_type )
+			{
+				return true;
+			}
+
+			else
+			{
+				error( it, 'typeof ' + name, '"' + expected_type + '"', '"' + typeof it + '"' );
+				return false;
+			}
+		}
+
+		function checkNumber( it, name, condition, condition_name )
+		{
+			if ( condition( it ) === true )
+			{
+				return true;
+			}
+
+			else
+			{
+				error( it, name, condition_name, 'not' );
+			}
+		}
+
+		function isPositive( nr )
+		{
+			return ( nr > 0 );
+		}
+
+		function error( it, name, expected, result )
+		{
+			throw new Error ( 'glitch(): Expected ' + name + ' to be ' + expected + ', but it was ' + result + '.' );
 		}
 
 		return glitchImageData;
