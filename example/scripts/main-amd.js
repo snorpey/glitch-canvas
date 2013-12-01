@@ -11,7 +11,7 @@ requirejs.config(
 
 require(
 	[
-		'../../src/glitch',
+		'../../src/glitch-canvas',
 	],
 	function( glitch )
 	{
