@@ -49,9 +49,9 @@
 		var image_data_1 = ctx_1.getImageData( 0, 0, canvas_width, canvas_height );
 
 		// glitch the image data (passing drawImageDataInCanvasTwo as a callback function)
-		var glitch_options = { amount: 10, seed: 45, iterations: 30, quality: 30 };
+		var parameters = { amount: 10, seed: 45, iterations: 30, quality: 30 };
 		
-		glitch( image_data_1, glitch_options, drawImageDataInCanvasTwo );
+		glitch( image_data_1, parameters, drawImageDataInCanvasTwo );
 		
 		function drawImageDataInCanvasTwo( image_data )
 		{
