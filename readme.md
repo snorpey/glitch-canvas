@@ -1,23 +1,23 @@
 glitch-canvas
 =============
 
-What is it?
+what is it?
 -----------
-glitch-canvas is a JavaScript library for applying a glitch effect (see this
+glitch-canvas is a javascript library for applying a glitch effect (see this
 [example](http://i.imgur.com/jU1hiYl.png)) to a canvas element.
 
-How to use it
+how to use it
 -------------
 glitch-canvas is designed to be used in web browsers (see
 [Requirements](#requirements) for more information).
 
-The library is used like this:
+the library is used like this:
 
 	glitch(image_data, parameters, callback);
 
-_ImageData_ **image_data** (required): is an ImageData object as required by [canvas.getImageData()](https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D#getImageData()).
+_imagedata_ **image_data** (required): is an ImageData object as required by [canvas.getImageData()](https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D#getImageData()).
 
-_Object_ **parameters** (required): object containing the parameters for the glitch effect. You can check out my [jpg-glitch](http://snorpey.github.io/jpg-glitch/)
+_object_ **parameters** (required): object containing the parameters for the glitch effect. you can check out my [jpg-glitch](http://snorpey.github.io/jpg-glitch/)
 experiment to get a better understanding of the values. The following parameters are accepted:
 
 ```javascript
@@ -30,9 +30,9 @@ experiment to get a better understanding of the values. The following parameters
 ```
 
 _function_ **callback** (required): callback function that gets passed a glitched
-ImageData object as argument.
+imagedata object as argument.
 
-Simple Example
+simple example
 --------------
 ```javascript
 	// assuming there's a loaded image and a canvas element in the DOM.
@@ -53,21 +53,35 @@ Simple Example
 	glitch(my_image_data, parameters, drawGlitchedImageData);
 ```
 
-There are more detailed examples available in the [example/](example) folder.
+there are more detailed examples available in the ```./example/``` folder.
 
-Loading
+loading
 -------
-The library supports loading as an [AMD module](https://en.wikipedia.org/wiki/Asynchronous_module_definition)
-with [RequireJS](http://requirejs.org).
+the library supports loading as an [amd module](https://en.wikipedia.org/wiki/Asynchronous_module_definition)
+with [requirejs](http://requirejs.org).
 
-Requirements
+requirements
 ------------
-The following browser features are required for the library to work:
+the following browser features are required for the library to work:
 
 * canvas support (including canvas.toDataURL method)
 * Array.prototype.forEach
 
-The library does NOT check if those features are supported in the browser.
+the library does __not__ check if those features are actually supported in the browser.
+
+build script
+------------
+the build script takes care of minifying the scripts files. it uses [gruntjs](http://gruntjs.com/).
+
+please make sure that both [nodejs](http://nodejs.org/) and grunt-cli are [set up properly](http://gruntjs.com/getting-started) on your machine. run ```npm install``` from within the ```./build/``` folder to install the dependencies of the build script.
+
+to build, run ```grunt``` from within the ```./build/``` folder. the optimized files will get copied to the ```dist/``` folder.
+
+tests
+-----
+before you run the tests, make sure you have [nodejs](http://nodejs.org) (with NPM) installed on your machine. open the ```./test/``` folder in your terminal and install the dependencies with ```npm install```.
+
+to run the tests, run ```mocha-phantomjs tester.html``` from the ```./test/``` folder.
 
 License
 -------
