@@ -75,7 +75,7 @@ the build script takes care of minifying the scripts files. it uses [gruntjs](ht
 
 please make sure that both [nodejs](http://nodejs.org/) and grunt-cli are [set up properly](http://gruntjs.com/getting-started) on your machine. run ```npm install``` from within the ```./build/``` folder to install the dependencies of the build script.
 
-to build, run ```grunt``` from within the ```./build/``` folder. the optimized files will get copied to the ```dist/``` folder.
+to build, run ```grunt``` from within the ```./build/``` folder. the optimized files will get copied to the ```./dist/``` folder.
 
 tests
 -----
