@@ -11,13 +11,13 @@ glitch-canvas is a javascript library for applying a glitch effect (see this
 how to use it
 -------------
 glitch-canvas is designed to be used in web browsers (see
-[Requirements](#requirements) for more information).
+[requirements](#requirements) for more information).
 
 the library is used like this:
 
 	glitch(image_data, parameters, callback);
 
-_imagedata_ **image_data** (required): is an ImageData object as required by [canvas.getImageData()](https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D#getImageData()).
+_imagedata_ **image_data** (required): is an ImageData object as returned by [canvas.getImageData()](https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D#getImageData()).
 
 _object_ **parameters** (required): object containing the parameters for the glitch effect. you can check out my [jpg-glitch](http://snorpey.github.io/jpg-glitch/)
 experiment to get a better understanding of the values. The following parameters are accepted:
@@ -81,10 +81,10 @@ to build, run ```grunt``` from within the ```./build/``` folder. the optimized f
 
 tests
 -----
-before you run the tests, make sure you have [nodejs](http://nodejs.org) (with NPM) installed on your machine. open the ```./test/``` folder in your terminal and install the dependencies with ```npm install```.
+before you run the tests, make sure you have [nodejs](http://nodejs.org) and [npm](http://npmjs.org) installed on your machine. open the ```./test/``` folder in your terminal and install the dependencies with ```npm install```. in addition to that, you may have to install mocha-phantomjs globally: ```npm install -g mocha-phantomjs```.
 
 to run the tests, run ```mocha-phantomjs tester.html``` from the ```./test/``` folder.
 
-License
+license
 -------
-[MIT](LICENSE)
+[mit](LICENSE)
