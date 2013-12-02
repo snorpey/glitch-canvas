@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/snorpey/glitch-canvas.png?branch=master)](https://travis-ci.org/snorpey/glitch-canvas)
+
 glitch-canvas
 =============
 
