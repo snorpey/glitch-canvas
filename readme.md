@@ -17,7 +17,7 @@ the library is used like this:
 
 	glitch(image_data, parameters, callback);
 
-_imagedata_ **image_data** (required): is an ImageData object as returned by [canvas.getImageData()](https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D#getImageData() ).
+_imagedata_ **image_data** (required): is an ImageData object as returned by [canvas.getImageData()](https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D#getImageData%28%29 ).
 
 _object_ **parameters** (required): object containing the parameters for the glitch effect. you can check out my [jpg-glitch](http://snorpey.github.io/jpg-glitch/)
 experiment to get a better understanding of the values. The following parameters are accepted:
