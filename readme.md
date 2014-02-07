@@ -5,8 +5,11 @@ glitch-canvas
 
 what is it?
 -----------
-glitch-canvas is a javascript library for applying a glitch effect (see this
-[example](http://i.imgur.com/jU1hiYl.png)) to a canvas element.
+glitch-canvas is a javascript library for applying a glitch effect to a canvas element. it can be used to transform images like this:
+
+![glitched image](glitch-example.png)
+
+for a live example, you can check out my [jpg-glitch](http://snorpey.github.io/jpg-glitch) editor online.
 
 how to use it
 -------------
