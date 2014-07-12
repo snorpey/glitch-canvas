@@ -10,6 +10,8 @@ downloads
 * [glitch-canvas.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas.js) 7kb
 * [glitch-canvas-master.zip](https://github.com/snorpey/glitch-canvas/archive/master.zip) 326kb
 
+```$ bower install glitch-canvas```
+
 what is it?
 -----------
 glitch-canvas is a javascript library for applying a glitch effect to a canvas element. it can be used to transform images like this:
