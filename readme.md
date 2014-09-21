@@ -103,7 +103,12 @@ license
 
 glitch-canvas in the wild
 -------------------------
-* [jpg-glitch](http://snorpey.github.io/jpg-glitch)
-* [fuzzy.cc](http://www.fuzzywobble.com/project.php?p=77&n=glitch-image-on-hover)
+* [jpg-glitch](http://snorpey.github.io/jpg-glitch): glitch editor 
+* [glitch-img](https://github.com/kunjinkao/glitch-img): glitch-canvas web component
+* [fuzzy.cc](http://www.fuzzywobble.com/project.php?p=77&n=glitch-image-on-hover): hover effect
 
-if you want to add your site to this list, you can create a pull request or send me an email.
+implementations in other languages
+----------------------------------
+* python: [jpglitch](https://github.com/Kareeeeem/jpglitch)
+
+if you want to add your site or project to one of these lists, you can create a pull request or send me an email.
