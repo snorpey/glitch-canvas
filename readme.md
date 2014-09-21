@@ -100,3 +100,10 @@ to run the tests, run ```mocha-phantomjs tester.html``` from the ```./test/``` f
 license
 -------
 [mit](LICENSE)
+
+glitch-canvas in the wild
+-------------------------
+* [jpg-glitch](http://snorpey.github.io/jpg-glitch)
+* [fuzzy.cc](http://www.fuzzywobble.com/project.php?p=77&n=glitch-image-on-hover)
+
+if you want to add your site to this list, you can create a pull request or send me an email.
