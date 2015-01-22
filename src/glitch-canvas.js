@@ -125,9 +125,17 @@
 
 		function getBase64FromImageData( image_data, quality )
 		{
-			var q = typeof quality === 'number' && quality < 1 && quality > 0 ? quality : 0.1;
-			ctx_2.putImageData( image_data, 0, 0 );
-			return canvas_2.toDataURL( 'image/jpeg', q );
+			var q = typeof quality === "number" && quality < 1 && quality > 0 ? quality : .1;
+	        ctx_2.putImageData(image_data, 0, 0);
+	        var base64 = canvas_2.toDataURL("image/jpeg", q);
+	        if( base64.length % 4 === 3 ) {
+	            base64 += '=';
+	        } else if( base64.length % 4 === 2 ) {
+	            base64 += '==';
+	        } else if( base64.length % 4 === 1 ) {
+	            base64 += '===';
+	        }
+	        return base64;
 		}
 
 		function getJpegHeaderSize( data )
