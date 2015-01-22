@@ -128,12 +128,16 @@
 			var q = typeof quality === "number" && quality < 1 && quality > 0 ? quality : .1;
 	        ctx_2.putImageData(image_data, 0, 0);
 	        var base64 = canvas_2.toDataURL("image/jpeg", q);
-	        if( base64.length % 4 === 3 ) {
-	            base64 += '=';
-	        } else if( base64.length % 4 === 2 ) {
-	            base64 += '==';
-	        } else if( base64.length % 4 === 1 ) {
-	            base64 += '===';
+	        switch(base64.length % 4) {
+	            case 3:
+	                base64 += '=';
+	                break;
+	            case 2:
+	                base64 += '==';
+	                break;
+	            case 1:
+	                base64 += '===';
+	                break;
 	        }
 	        return base64;
 		}
