@@ -25,5 +25,11 @@
     "bower_components",
     "test",
     ".travis.yml"
+    "build",
+    "src",
+    "bower.json",
+    "*.md",
+    "*.png",
+    "LICENSE"
   ]
 }
