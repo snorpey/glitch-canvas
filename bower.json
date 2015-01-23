@@ -1,6 +1,6 @@
 {
   "name": "glitch-canvas",
-  "version": "0.1.3",
+  "version": "0.1.3.1",
   "authors": [
     "Georg Fischer <snorpey@gmail.com>"
   ],
@@ -24,7 +24,7 @@
     "node_modules",
     "bower_components",
     "test",
-    ".travis.yml"
+    ".travis.yml",
     "build",
     "src",
     "bower.json",
