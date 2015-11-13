@@ -1,0 +1,30 @@
+{
+  "name": "glitch-canvas",
+  "version": "0.1.4",
+  "description": "JavaScript library for applying a glitch effect to a canvas element",
+  "main": "dist/glitch-canvas.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snorpey/glitch-canvas.git"
+  },
+  "keywords": [
+    "glitch",
+    "effect",
+    "fx",
+    "javascript",
+    "canvas"
+  ],
+  "author": "Georg Fischer <snorpey@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/snorpey/glitch-canvas/issues"
+  },
+  "homepage": "https://github.com/snorpey/glitch-canvas#readme"
+}
