@@ -11,6 +11,7 @@ downloads
 * [glitch-canvas-master.zip](https://github.com/snorpey/glitch-canvas/archive/master.zip) 326kb
 
 ```$ bower install glitch-canvas```
+```$ npm install jpg-glitch-canvas```
 
 what is it?
 -----------
