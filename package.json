@@ -1,5 +1,5 @@
 {
-  "name": "jpg-glitch-canvas",
+  "name": "glitch-canvas",
   "version": "0.1.6",
   "description": "JavaScript library for applying a glitch effect to a canvas element",
   "main": "dist/glitch-canvas.js",
