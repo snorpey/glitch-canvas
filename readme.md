@@ -335,7 +335,7 @@ see [``toJPGStream()``](#tojpgstream).
 
 toPNGStream()
 ---
-``toPNGStream()`` doesn't take any following parameters. it uses [canvas#pngstream()](https://github.com/Automattic/node-canvas#canvaspngstream) from [node-canvas](https://github.com/Automattic/node-canvas) internally.
+``toPNGStream()`` doesn't take any parameters. it uses [canvas#pngstream()](https://github.com/Automattic/node-canvas#canvaspngstream) from [node-canvas](https://github.com/Automattic/node-canvas) internally.
 
 it returns a ``PNGStream`` object.
 
