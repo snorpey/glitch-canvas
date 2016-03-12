@@ -5,16 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-// import { toImage as base64URLImage } from './output/browser/toImage';
-
-// import base64ToByteArray from './glitch/base64ToByteArray';
-// import glitchByteArray from './glitch/glitchByteArray';
-// import byteArrayToBase64 from './glitch/byteArrayToBase64';
-
-
-// // DEBUG
-// import Canvas from 'canvas-browserify';
-// let Image = Canvas.Image;
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
