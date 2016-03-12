@@ -1,8 +1,23 @@
-language: node_js
 node_js:
-    - "0.10"
-before_script:
-    - cd test
-    - npm install
-    - npm install -g mocha-phantomjs
-script: "mocha-phantomjs tester.html"
+  - "4.1"
+
+matrix:
+  allow_failures:
+    - node_js: "5"
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libcairo2-dev
+      - libjpeg8-dev
+      - libpango1.0-dev
+      - libgif-dev
+      - g++-4.8
+env:
+  - CXX=g++-4.8
+before_install:
+  - $CXX --version
+  - npm explore npm -g -- npm install node-gyp@latest
+  - npm install -g phantomjs
+sudo: false

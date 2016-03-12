@@ -25,5 +25,6 @@ $RECYCLE.BIN/
 *.sublime-workspace
 
 # nodeJS modules
-build/node_modules
+node_modules
 test/node_modules
+examples/node-output
