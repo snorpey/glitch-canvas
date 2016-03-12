@@ -2,7 +2,6 @@
 var fs = require('fs');
 var assert = require('assert');
 var stream = require('stream');
-var libxmljs = require('libxmljs');
 var Canvas = require('canvas-browserify');
 var expect = require('expect.js');
 
