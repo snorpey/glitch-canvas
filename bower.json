@@ -1,6 +1,6 @@
 {
   "name": "glitch-canvas",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "authors": [
     "Georg Fischer <snorpey@gmail.com>"
   ],
@@ -8,7 +8,8 @@
   "main": "dist/glitch-canvas.js",
   "moduleType": [
     "amd",
-    "globals"
+    "globals",
+    "commonjs"
   ],
   "keywords": [
     "glitch",
@@ -31,6 +32,6 @@
     "*.md",
     "*.png",
     "LICENSE",
-    "example"
+    "examples"
   ]
 }
