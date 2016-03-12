@@ -1,14 +1,32 @@
 {
   "name": "glitch-canvas",
-  "version": "0.1.7",
+  "version": "1.0.1",
   "description": "JavaScript library for applying a glitch effect to a canvas element",
   "main": "dist/glitch-canvas.js",
   "directories": {
-    "example": "example",
+    "examples": "examples",
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run clean && npm run build-node && npm run build-browsers && npm run rm-tmp",
+    "clean": "rimraf dist dist-node && mkdirp dist dist-node",
+    "build-node": "babel src --presets es2015 --plugins add-module-exports,transform-object-assign --ignore browser --out-dir dist-node",
+    "build-browsers": "npm run mk-tmp && npm run browsers-es6 && npm run standard-build && npm run polyfill-build",
+    "browsers-es6": "babel src --ignore node,index.js --presets es2015 --plugins add-module-exports,transform-object-assign --out-dir dist/tmp",
+    "standard-build": "npm run standard-browserify && npm run standard-uglify && npm run standard-beautify",
+    "standard-browserify": "browserify -t [ uglifyify --mangle=0 ] --standalone glitch dist/tmp/browser.js | derequire > dist/tmp/glitch-canvas.tmp.js",
+    "standard-uglify": "uglifyjs -mc < dist/tmp/glitch-canvas.tmp.js > dist/glitch-canvas.min.js",
+    "standard-beautify": "uglifyjs --b bracketize=true,quote_style=1,max-line-len=80,width=80 < dist/tmp/glitch-canvas.tmp.js > dist/glitch-canvas.js",
+    "polyfill-build": "npm run polyfill-browserify && npm run polyfill-uglify && npm run polyfill-beautify",
+    "polyfill-browserify": "browserify -t [ uglifyify --mangle=0 ] --standalone glitch dist/tmp/browser-with-polyfills.js | derequire > dist/tmp/glitch-canvas-with-polyfills.tmp.js",
+    "polyfill-uglify": "uglifyjs -mc < dist/tmp/glitch-canvas-with-polyfills.tmp.js > dist/glitch-canvas-with-polyfills.min.js",
+    "polyfill-beautify": "uglifyjs --b bracketize=true,quote_style=1,max-line-len=80,width=80 < dist/tmp/glitch-canvas-with-polyfills.tmp.js > dist/glitch-canvas-with-polyfills.js",
+    "mk-tmp": "mkdir -p dist/tmp",
+    "rm-tmp": "rm -rf dist/tmp",
+    "prepublish": "npm run build && npm run test",
+    "test": "npm run test-node && npm run test-browser",
+    "test-node": "mocha ./test/test-node.js",
+    "test-browser": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.html"
   },
   "repository": {
     "type": "git",
@@ -26,5 +44,25 @@
   "bugs": {
     "url": "https://github.com/snorpey/glitch-canvas/issues"
   },
-  "homepage": "https://github.com/snorpey/glitch-canvas#readme"
+  "homepage": "https://github.com/snorpey/glitch-canvas#readme",
+  "dependencies": {
+    "es6-promise": "^3.0.2",
+    "canvas-browserify": "^1.1.3",
+    "webworkify": "^1.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-plugin-transform-object-assign": "^6.5.0",
+    "babel-preset-es2015": "^6.5.0",
+    "browserify": "^13.0.0",
+    "derequire": "^2.0.2",
+    "expect.js": "^0.3.1",
+    "mkdirp": "^0.5.1",
+    "mocha": "^2.3.4",
+    "mocha-phantomjs-core": "^1.3.0",
+    "rimraf": "^2.4.3",
+    "uglify-js": "^2.6.1",
+    "uglifyify": "^3.0.1"
+  }
 }

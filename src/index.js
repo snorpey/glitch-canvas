@@ -1,0 +1,165 @@
+import sanitizeInput from './input/sanitizeInput';
+import fromBufferToImageData from './input/node/fromBuffer';
+import fromStreamToImageData from './input/node/fromStream';
+import base64URLToBuffer from './output/node/toBuffer';
+import base64URLToImageData from './output/toImageData';
+import base64URLToPNGStream from './output/node/toPNGStream';
+import base64URLToJPGStream from './output/node/toJPGStream';
+import imageDataToBase64 from './glitch/node/imageDataToBase64';
+import glitchImageData from './glitch/glitchImageData';
+
+// constructing an object that allows for a chained interface.
+// for example stuff like:
+// 
+// glitch( params )
+//     .fromBuffer( buffer )
+//     .toImageData()
+// 
+// etc...
+// 
+
+export default function ( params ) {
+	params = sanitizeInput( params );
+
+	let inputFn;
+	let outputFn;
+	
+	let api = {
+		getParams,
+		getInput,
+		getOutput
+	};
+
+	let inputMethods = {
+		fromBuffer,
+		fromImageData,
+		fromStream
+	};
+
+	let outputMethods = {
+		toBuffer,
+		toDataURL,
+		toImageData,
+		toPNGStream,
+		toJPGStream,
+		toJPEGStream
+	};
+
+	function getParams () {
+		return params;
+	}
+
+	function getInput () {
+		var result = Object.assign( { }, api );
+
+		if ( ! inputFn ) {
+			Object.assign( result, inputMethods );
+		}
+
+		return result;
+	}
+
+	function getOutput () {
+		var result = Object.assign( { }, api );
+
+		if ( ! outputFn ) {
+			Object.assign( result, outputMethods );
+		}
+
+		return result;
+	}
+
+	function noTransform ( x ) { return x; }
+
+	function fromBuffer ( inputOptions ) { return setInput( fromBufferToImageData, inputOptions ); }
+	function fromStream ( inputOptions ) { return setInput( fromStreamToImageData, inputOptions, true ); }
+	function fromImageData ( inputOptions ) { return setInput( noTransform, inputOptions ); }
+
+	function toBuffer ( outputOptions ) { return setOutput( base64URLToBuffer, outputOptions, true ); }
+	function toDataURL ( outputOptions ) { return setOutput( noTransform, outputOptions ); }
+	function toImageData ( outputOptions ) { return setOutput( base64URLToImageData, outputOptions, true ); }
+	function toPNGStream ( outputOptions ) { return setOutput( base64URLToPNGStream, outputOptions, true ); }
+	function toJPGStream ( outputOptions ) { return setOutput( base64URLToJPGStream, outputOptions, true ); }
+	function toJPEGStream ( outputOptions ) { return setOutput( base64URLToJPGStream, outputOptions, true ); }
+
+	function setInput ( fn, inputOptions, canResolve ) {		
+		inputFn = function () {
+			return new Promise( function ( resolve, reject ) {
+				if ( canResolve ) {
+					fn( inputOptions, resolve, reject )
+				} else {
+					if ( fn === noTransform ) {
+						resolve( inputOptions );
+					} else {
+						try {
+							resolve( fn( inputOptions, resolve, reject ) );
+						} catch ( err ) {
+							reject( err );
+						}
+					}
+				}
+			} );
+		}
+
+		if ( isReady() ) {
+			return getResult();
+		} else {
+			return getOutput();
+		}
+	}
+
+	function setOutput ( fn, outputOptions, canResolve ) {
+		outputFn = function ( base64URL ) {
+			return new Promise( function ( resolve, reject ) {
+				if ( canResolve ) {
+					fn( base64URL, outputOptions, resolve, reject );
+				} else {
+					if ( fn === noTransform ) {
+						resolve( base64URL );
+					} else {
+						fn( base64URL, outputOptions )
+							.then( resolve, reject );
+					}
+				}
+			} );
+		}
+
+		if ( isReady() ) {
+			return getResult();
+		} else {
+			return getInput();
+		}
+	}
+
+	function isReady () {
+		return inputFn && outputFn;
+	}
+
+	function getResult () {
+		return new Promise( function ( resolve, reject ) {
+			inputFn()
+				.then( function ( imageData ) {
+					return glitch( imageData, params );
+				}, reject )
+				.then( function ( base64URL ) {
+					outputFn( base64URL )
+						.then( resolve, reject );
+				}, reject );
+		} );
+	}
+
+	function glitch ( imageData, params ) {
+		return new Promise( function ( resolve, reject ) {
+			imageDataToBase64( imageData, params.quality )
+				.then( function ( base64URL ) {
+					try {
+						resolve( glitchImageData( imageData, base64URL, params ) );
+					} catch ( err ) {
+						reject( err );
+					}
+				}, reject );
+		} );
+	}
+
+	return getInput();
+}

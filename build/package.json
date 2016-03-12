@@ -1,8 +1,0 @@
-{
-	"name": "glitch-canvas-build",
-	"version": "0.0.1",
-	"devDependencies": {
-		"grunt": "~0.4.1",
-		"grunt-contrib-uglify": "~0.2.4"
-	}
-}

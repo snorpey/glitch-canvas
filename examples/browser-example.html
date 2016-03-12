@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>image triangulation example</title>
+		<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		body { font-family: sans-serif; color: #333; font-size: 14px; padding: 50px; }
+		h1 { font-weight: normal; font-size: 14px; margin-bottom: 10px; margin-top: 50px; }
+		textarea { width: 650px; height: 400px; }
+		</style>
+	</head>
+	<body>
+		<h1>toDataURL</h1>
+		<div id="img-container"></div>
+		<h1>toImageData</h1>
+		<div id="canvas-container"></div>
+		<script src="../dist/glitch-canvas-with-polyfills.js"></script>
+		<script>
+			/*global glitch, devicePixelRatio*/
+			var imagePath = 'img/lincoln.jpg';
+
+			var imgContainerEl = document.getElementById( 'img-container' );
+			var canvasContainerEl = document.getElementById( 'canvas-container' );
+			
+			var params = {
+				amount:     35,
+				iterations: 20,
+				quality:    30,
+				seed:       25
+			};
+
+			loadImage( imagePath, function ( img ) {
+				glitch( params )
+					.fromImage( img )
+					.toDataURL()
+					.then( function( dataURL ) {
+						var imageEl = new Image();
+						imageEl.src = dataURL;
+						imgContainerEl.appendChild( imageEl );
+					} );
+
+				glitch( params )
+					.fromImage( img )
+					.toImageData()
+					.then( function( imageData ) {
+						var canvasEl = document.createElement( 'canvas' );
+						canvasEl.width = imageData.width;
+						canvasEl.height = imageData.height;
+						canvasEl.style.width = imageData.width + 'px';
+						var ctx = canvasEl.getContext( '2d' );
+						canvasContainerEl.appendChild( canvasEl );
+						ctx.putImageData( imageData, 0, 0 );
+					} );
+			} );
+
+			function loadImage ( src, callback ) {
+				var imageEl = new Image();
+
+				imageEl.onload = function () {
+					callback( imageEl );
+				};
+
+				imageEl.src = src;
+			}
+		</script>
+	</body>
+</html>
