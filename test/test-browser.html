@@ -262,6 +262,31 @@ describe( 'browser tests for glitch-canvas', function () {
 				} );
 			} );
 		} );
+
+		// toImage
+		
+		it ( 'should have a toImage method', function () {
+			expect( glitch().fromImage().toImage ).to.be.a( 'function' );
+		} );
+
+		describe( '#toImage()', function () {
+			it ( 'should return an image element', function ( done ) {
+				this.timeout( 5000 );
+
+				loadImage( done, function ( img ) {
+					glitch()
+						.fromImage( img )
+						.toImage()
+						.then ( function ( img ) {
+							expect( img ).to.be.an( 'object' );
+							expect( img.naturalWidth ).to.be.a( 'number' );
+							expect( img.naturalHeight ).to.be.a( 'number' );
+							
+							done();
+						}, done );
+				} );
+			} );
+		} );
 	} );
 } );
 

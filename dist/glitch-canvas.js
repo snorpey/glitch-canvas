@@ -427,8 +427,8 @@
             }
             Object.defineProperty(exports, '__esModule', {
                 value: !0
-            }), exports['default'] = function(base64URL, resolve, reject) {
-                loadBase64Image(base64URL).then(resolve, reject);
+            }), exports['default'] = function(base64URL, opts, resolve, reject) {
+                (0, _loadBase64Image2['default'])(base64URL).then(resolve, reject);
             };
             var _loadBase64Image = _dereq_('../../util/loadBase64Image'), _loadBase64Image2 = _interopRequireDefault(_loadBase64Image);
             module.exports = exports['default'];
