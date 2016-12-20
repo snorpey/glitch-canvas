@@ -82,6 +82,8 @@ var glitchParams = {
 
 ```
 
+_please note_: depending on the size, quality and contents of the source image and the number of iterations, the visual effect of the `seed` and `amount` parameters can be marginal or not even noticeable.
+
 it returns an object containing all __input methods__.
 
 fromImage()
