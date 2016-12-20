@@ -395,6 +395,7 @@ glitch-canvas in the wild
 * [glitch-img](https://github.com/kunjinkao/glitch-img): glitch-canvas web component
 * [fuzzy.cc](http://www.fuzzywobble.com/project.php?p=77&n=glitch-image-on-hover): hover effect
 * [G͋l̷i᷉t͠c̭h](http://rawgit.com/DUQE/glitch/master/index.html): glitch html
+* [Be Aug Aware](https://augaware.org/)
 
 implementations in other languages
 ----------------------------------
