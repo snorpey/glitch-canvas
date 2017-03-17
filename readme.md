@@ -396,6 +396,7 @@ glitch-canvas in the wild
 * [fuzzy.cc](http://www.fuzzywobble.com/project.php?p=77&n=glitch-image-on-hover): hover effect
 * [G͋l̷i᷉t͠c̭h](http://rawgit.com/DUQE/glitch/master/index.html): glitch html
 * [Be Aug Aware](https://augaware.org/)
+* [Viewport Glitcher](https://github.com/zky829/viewport-glitcher/)
 
 implementations in other languages
 ----------------------------------
