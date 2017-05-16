@@ -3,6 +3,8 @@
 glitch-canvas
 =============
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/snorpey/glitch-canvas.svg)](https://greenkeeper.io/)
+
 downloads
 ---------
 
