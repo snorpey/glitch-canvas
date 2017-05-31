@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>glitch-canvas example</title>
+		<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		body { font-family: sans-serif; color: #333; font-size: 14px; padding: 50px; }
+		h1 { font-weight: normal; font-size: 14px; margin-bottom: 10px; margin-top: 50px; }
+		textarea { width: 650px; height: 400px; }
+		</style>
+	</head>
+	<body>
+		<h1>toDataURL</h1>
+		<div id="img-container"></div>
+		<h1>toImageData</h1>
+		<div id="canvas-container"></div>
+		<script src="https://unpkg.com/systemjs"></script>
+		<script>
+		
+		// setting up systemjs. this allows us to load es6 modules
+		SystemJS.config( {
+			map: {
+				'plugin-traceur': 'https://unpkg.com/systemjs-plugin-traceur',
+				'traceur': 'https://unpkg.com/traceur/bin/traceur.js',
+				'traceur-runtime': 'https://unpkg.com/traceur/bin/traceur-runtime.js'
+			},
+			meta: {
+				'traceur': {
+					format: 'global',
+					exports: 'traceur'
+				},
+				'traceur-runtime': {
+					format: 'global',
+					exports: '$traceurRuntime'
+				}
+			},
+			transpiler: 'plugin-traceur',
+			transpilerRuntime: false,
+			baseURL: '.'
+		} );
+
+		// check out this file to see how to consume glitch-canvas as an es6 module
+		// (requires browsers that support ES6, even in web workers)
+		SystemJS.import( './browser-module-example.js' );
+		</script>
+
+		<script>
+			
+		</script>
+	</body>
+</html>

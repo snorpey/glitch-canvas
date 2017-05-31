@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>image triangulation example</title>
+		<title>glitch-canvas example</title>
 		<style>
 		* { margin: 0; padding: 0; box-sizing: border-box; }
 		body { font-family: sans-serif; color: #333; font-size: 14px; padding: 50px; }
@@ -15,8 +15,11 @@
 		<div id="img-container"></div>
 		<h1>toImageData</h1>
 		<div id="canvas-container"></div>
-		<script src="../dist/glitch-canvas-with-polyfills.js"></script>
+		<!-- <script src="../dist/glitch-canvas-browser.es6.umd.min.js"></script> -->
+		<script src="../dist/glitch-canvas-browser.js"></script>
+		<!-- <script src="../dist/glitch-canvas-browser.es6.js"></script> -->
 		<script>
+			// import glitch from '../dist/glitch-canvas-browser.es6.js';
 			/*global glitch, devicePixelRatio*/
 			var imagePath = 'img/lincoln.jpg';
 

@@ -1,6 +1,6 @@
-import Canvas from 'canvas-browserify';
+import Canvas from '../../util/canvas.js';
 
-let Image = Canvas.Image;
+const Image = Canvas.Image;
 
 export default function ( image ) {
 	if ( image instanceof HTMLImageElement ) {
@@ -9,12 +9,12 @@ export default function ( image ) {
 			throw new Error( "This this image hasn't finished loading: " + image.src );
 		}
 
-		let canvas = new Canvas( image.naturalWidth, image.naturalHeight );
-		let ctx = canvas.getContext( '2d' );
+		const canvas = new Canvas( image.naturalWidth, image.naturalHeight );
+		const ctx = canvas.getContext( '2d' );
 		
 		ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
 
-		let imageData = ctx.getImageData( 0, 0, canvas.width, canvas.height );
+		const imageData = ctx.getImageData( 0, 0, canvas.width, canvas.height );
 
 		if ( imageData.data && imageData.data.length ) {
 			if ( typeof imageData.width === 'undefined' ) {

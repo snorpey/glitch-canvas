@@ -1,13 +1,13 @@
 import stream from 'stream';
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
-import Canvas from 'canvas-browserify';
+import Canvas from '../../util/canvas.js';
 
-let Readable = stream.Readable
-let Image = Canvas.Image;
+const Readable = stream.Readable
+const Image = Canvas.Image;
 
 export default function ( stream, resolve, reject ) {
 	if ( stream instanceof Readable ) {
-		let bufferContent = [ ];
+		const bufferContent = [ ];
 				
 		stream.on( 'data', function( chunk ) {
 			bufferContent.push( chunk );
@@ -15,12 +15,12 @@ export default function ( stream, resolve, reject ) {
 		
 		stream.on( 'end', function() {
 			try {
-				let buffer = Buffer.concat( bufferContent );
-				let image = new Image;
+				const buffer = Buffer.concat( bufferContent );
+				const image = new Image;
 				image.src = buffer;
 
-				let canvas = new Canvas( image.width, image.height );
-				let ctx = canvas.getContext( '2d' );
+				const canvas = new Canvas( image.width, image.height );
+				const ctx = canvas.getContext( '2d' );
 
 				ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
 

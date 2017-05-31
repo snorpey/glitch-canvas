@@ -10,21 +10,23 @@ export default function ( params ) {
 		params = { };
 	}
 
-	let defaultKeys = Object
+	Object
 		.keys( defaultParams )
-		.filter( function ( key ) { return key !== 'iterations'; } );
-
-	defaultKeys.forEach( function ( key ) {
-		if ( typeof params[key] !== 'number' || isNaN( params[key] ) ) {
-			params[key] = defaultParams[key];
-		} else {
-			params[key] = clamp( params[key], 0, 100 );
-		}
+		.filter( key => key !== 'iterations' )
+		.forEach( key => {
+			if ( typeof params[key] !== 'number' || isNaN( params[key] ) ) {
+				params[key] = defaultParams[key];
+			} else {
+				params[key] = clamp( params[key], 0, 100 );
+			}
 		
-		params[key] = Math.round( params[key] );
-	} );
+			params[key] = Math.round( params[key] );
+		} );
 
-	if ( typeof params.iterations !== 'number' || isNaN( params.iterations ) || params.iterations <= 0 ) {
+	if (
+		typeof params.iterations !== 'number' ||
+		isNaN( params.iterations ) || params.iterations <= 0
+	) {
 		params.iterations = defaultParams.iterations;	
 	}
 

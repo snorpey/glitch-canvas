@@ -24,19 +24,10 @@ export default function ( params ) {
 	let inputFn;
 	let outputFn;
 	
-	let api = {
-		getParams,
-		getInput,
-		getOutput
-	};
+	const api = { getParams, getInput, getOutput };
+	const inputMethods = { fromBuffer, fromImageData, fromStream };
 
-	let inputMethods = {
-		fromBuffer,
-		fromImageData,
-		fromStream
-	};
-
-	let outputMethods = {
+	const outputMethods = {
 		toBuffer,
 		toDataURL,
 		toImageData,
@@ -50,7 +41,7 @@ export default function ( params ) {
 	}
 
 	function getInput () {
-		var result = Object.assign( { }, api );
+		const result = Object.assign( { }, api );
 
 		if ( ! inputFn ) {
 			Object.assign( result, inputMethods );
@@ -60,7 +51,7 @@ export default function ( params ) {
 	}
 
 	function getOutput () {
-		var result = Object.assign( { }, api );
+		const result = Object.assign( { }, api );
 
 		if ( ! outputFn ) {
 			Object.assign( result, outputMethods );
@@ -83,8 +74,8 @@ export default function ( params ) {
 	function toJPEGStream ( outputOptions ) { return setOutput( base64URLToJPGStream, outputOptions, true ); }
 
 	function setInput ( fn, inputOptions, canResolve ) {		
-		inputFn = function () {
-			return new Promise( function ( resolve, reject ) {
+		inputFn = () => {
+			return new Promise( ( resolve, reject ) => {
 				if ( canResolve ) {
 					fn( inputOptions, resolve, reject )
 				} else {
@@ -109,8 +100,8 @@ export default function ( params ) {
 	}
 
 	function setOutput ( fn, outputOptions, canResolve ) {
-		outputFn = function ( base64URL ) {
-			return new Promise( function ( resolve, reject ) {
+		outputFn = base64URL => {
+			return new Promise( ( resolve, reject ) => {
 				if ( canResolve ) {
 					fn( base64URL, outputOptions, resolve, reject );
 				} else {
@@ -129,19 +120,19 @@ export default function ( params ) {
 		} else {
 			return getInput();
 		}
-	}
+	};
 
 	function isReady () {
 		return inputFn && outputFn;
 	}
 
 	function getResult () {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			inputFn()
-				.then( function ( imageData ) {
+				.then( imageData => {
 					return glitch( imageData, params );
 				}, reject )
-				.then( function ( base64URL ) {
+				.then( base64URL => {
 					outputFn( base64URL )
 						.then( resolve, reject );
 				}, reject );
@@ -149,9 +140,9 @@ export default function ( params ) {
 	}
 
 	function glitch ( imageData, params ) {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			imageDataToBase64( imageData, params.quality )
-				.then( function ( base64URL ) {
+				.then(  base64URL => {
 					try {
 						resolve( glitchImageData( imageData, base64URL, params ) );
 					} catch ( err ) {

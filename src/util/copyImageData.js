@@ -1,4 +1,4 @@
-import Canvas from 'canvas-browserify';
+import Canvas from './util/canvas.js';
 import isImageData from '../util/isImageData';
 
 export default function ( imageData ) {
@@ -12,7 +12,7 @@ export default function ( imageData ) {
 				return copyImageDataWithCanvas( imageData );
 			}
 		} else {
-			let clampedArray = new Uint8ClampedArray( imageData.data );
+			const clampedArray = new Uint8ClampedArray( imageData.data );
 
 			if ( typeof ImageData === 'undefined' ) {
 				// http://stackoverflow.com/a/15238036/229189
@@ -47,8 +47,8 @@ export default function ( imageData ) {
 
 // http://stackoverflow.com/a/11918126/229189
 function copyImageDataWithCanvas ( imageData ) {
-	let canvas = Canvas( imageData.width, imageData.height );
-	let ctx = canvas.getContext( '2d' );
+	const canvas = Canvas( imageData.width, imageData.height );
+	const ctx = canvas.getContext( '2d' );
 	ctx.putImageData( imageData, 0, 0 );
 				
 	return ctx.getImageData( 0, 0, imageData.width, imageData.height );

@@ -1,5 +1,6 @@
 var fs = require('fs');
-var glitch = require('../dist-node/index.js');
+// var glitch = require('../dist-node/index.js');
+var glitch = require('../dist/glitch-canvas-node.js');
 var imagePath = 'img/lincoln.jpg';
 
 fromBufferToDataURL();

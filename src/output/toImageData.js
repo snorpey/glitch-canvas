@@ -4,9 +4,11 @@ import getImageSize from '../util/getImageSize';
 
 export default function ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
-		.then( function ( image ) {
-			let size = getImageSize( image );
-			let imageData = canvasFromImage( image ).ctx.getImageData( 0, 0, size.width, size.height );
+		.then( image => {
+			const size = getImageSize( image );
+			const imageData = canvasFromImage( image )
+				.ctx
+				.getImageData( 0, 0, size.width, size.height );
 			
 			if ( ! imageData.width ) {
 				imageData.width = size.width;
