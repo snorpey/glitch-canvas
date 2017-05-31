@@ -2,7 +2,7 @@
 var fs = require('fs');
 var assert = require('assert');
 var stream = require('stream');
-var Canvas = require('canvas-browserify');
+var Canvas = require('canvas');
 var expect = require('expect.js');
 
 var Image = Canvas.Image;
