@@ -1,6 +1,6 @@
 import glitchImageData from '../glitch/glitchImageData';
 
-onmessage = function ( msg ) {
+onmessage = msg => {
 	const imageData = msg.data.imageData;
 	const params = msg.data.params;
 	const base64URL = msg.data.base64URL;

@@ -4,8 +4,8 @@ import canvasFromImage from '../../util/canvasFromImage';
 
 export default function ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
-		.then( function ( image ) {
-			let stream = canvasFromImage( image ).canvas.pngStream()
+		.then( image => {
+			const stream = canvasFromImage( image ).canvas.pngStream()
 			resolve( stream );
 		}, function ( err ) {
 			reject( err );

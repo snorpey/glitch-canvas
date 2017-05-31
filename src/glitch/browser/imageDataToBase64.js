@@ -2,7 +2,7 @@ import Canvas from '../../util/canvas.js';
 import isImageData from '../../util/isImageData';
 
 export default function ( imageData, quality ) {
-	return new Promise ( function ( resolve, reject ) {
+	return new Promise ( ( resolve, reject ) => {
 		if ( isImageData( imageData ) ) {
 			const canvas = new Canvas( imageData.width, imageData.height );
 			const ctx = canvas.getContext( '2d' );

@@ -3,8 +3,8 @@ import canvasFromImage from '../../util/canvasFromImage';
 
 export default function ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
-		.then( function ( image ) {
-			let buffer = canvasFromImage( image ).canvas.toBuffer();
+		.then( image => {
+			const buffer = canvasFromImage( image ).canvas.toBuffer();
 			resolve( buffer );
 		}, reject );
 }

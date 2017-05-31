@@ -24,31 +24,18 @@ export default function glitch ( params ) {
 	let inputFn;
 	let outputFn;
 
-	let worker = new Worker( 'workers/glitchWorker.js' );//work( glitchWorker );
+	const worker = new Worker( 'workers/glitchWorker.js' );
 	
-	let api = {
-		getParams,
-		getInput,
-		getOutput
-	};
-
-	let inputMethods = {
-		fromImageData,
-		fromImage
-	};
-
-	let outputMethods = {
-		toImage,
-		toDataURL,
-		toImageData
-	};
+	const api = { getParams, getInput, getOutput };
+	const inputMethods = { fromImageData, fromImage };
+	const outputMethods = { toImage, toDataURL, toImageData };
 
 	function getParams () {
 		return params;
 	}
 
 	function getInput () {
-		var result = objectAssign( { }, api );
+		const result = objectAssign( { }, api );
 
 		if ( ! inputFn ) {
 			objectAssign( result, inputMethods );
@@ -58,7 +45,7 @@ export default function glitch ( params ) {
 	}
 
 	function getOutput () {
-		var result = objectAssign( { }, api );
+		const result = objectAssign( { }, api );
 
 		if ( ! outputFn ) {
 			objectAssign( result, outputMethods );
@@ -77,8 +64,8 @@ export default function glitch ( params ) {
 	function toImageData ( outputOptions ) { return setOutput( base64URLToImageData, outputOptions, true ); }
 
 	function setInput ( fn, inputOptions, canResolve ) {		
-		inputFn = function () {
-			return new Promise( function ( resolve, reject ) {
+		inputFn = () => {
+			return new Promise( ( resolve, reject ) => {
 				if ( canResolve ) {
 					fn( inputOptions, resolve, reject )
 				} else {
@@ -93,7 +80,7 @@ export default function glitch ( params ) {
 					}
 				}
 			} );
-		}
+		};
 
 		if ( isReady() ) {
 			return getResult();
@@ -103,8 +90,8 @@ export default function glitch ( params ) {
 	}
 
 	function setOutput ( fn, outputOptions, canResolve ) {
-		outputFn = function ( base64URL ) {
-			return new Promise( function ( resolve, reject ) {
+		outputFn = base64URL => {
+			return new Promise( ( resolve, reject ) => {
 				if ( canResolve ) {
 					fn( base64URL, outputOptions, resolve, reject );
 				} else {
@@ -116,7 +103,7 @@ export default function glitch ( params ) {
 					}
 				}
 			} );
-		}
+		};
 
 		if ( isReady() ) {
 			return getResult();
@@ -130,12 +117,12 @@ export default function glitch ( params ) {
 	}
 
 	function getResult () {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			inputFn()
-				.then( function ( imageData ) {
+				.then( imageData => {
 					return glitch( imageData, params );
 				}, reject )
-				.then( function ( base64URL ) {
+				.then( base64URL => {
 					outputFn( base64URL )
 						.then( resolve, reject );
 				}, reject );
@@ -143,9 +130,9 @@ export default function glitch ( params ) {
 	}
 
 	function glitch ( imageData, params ) {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			imageDataToBase64( imageData, params.quality )
-				.then( function ( base64URL ) {
+				.then( base64URL => {
 					return glitchInWorker( imageData, base64URL, params );
 				}, reject )
 				.then( resolve, reject );
@@ -153,8 +140,8 @@ export default function glitch ( params ) {
 	}
 
 	function glitchInWorker ( imageData, base64URL, params ) {
-		return new Promise( function ( resolve, reject ) {
-			worker.addEventListener( 'message', function ( event ) {
+		return new Promise( ( resolve, reject ) => {
+			worker.addEventListener( 'message', event => {
 				if ( event.data && event.data.base64URL ) {
 					resolve( event.data.base64URL );
 				} else {

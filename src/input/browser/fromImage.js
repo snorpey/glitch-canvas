@@ -1,6 +1,6 @@
 import Canvas from '../../util/canvas.js';
 
-let Image = Canvas.Image;
+const Image = Canvas.Image;
 
 export default function ( image ) {
 	if ( image instanceof HTMLImageElement ) {

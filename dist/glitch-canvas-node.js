@@ -14,7 +14,6 @@ var clone = function ( obj ) {
 	var result = false;
 	
 	if ( typeof obj !== 'undefined' ) {
-
 		try {
 			result = JSON.parse( JSON.stringify( obj ) );
 		} catch ( e ) { }
@@ -38,21 +37,23 @@ var sanitizeInput = function ( params ) {
 		params = { };
 	}
 
-	var defaultKeys = Object
+	Object
 		.keys( defaultParams )
-		.filter( function ( key ) { return key !== 'iterations'; } );
-
-	defaultKeys.forEach( function ( key ) {
-		if ( typeof params[key] !== 'number' || isNaN( params[key] ) ) {
-			params[key] = defaultParams[key];
-		} else {
-			params[key] = clamp( params[key], 0, 100 );
-		}
+		.filter( function (key) { return key !== 'iterations'; } )
+		.forEach( function (key) {
+			if ( typeof params[key] !== 'number' || isNaN( params[key] ) ) {
+				params[key] = defaultParams[key];
+			} else {
+				params[key] = clamp( params[key], 0, 100 );
+			}
 		
-		params[key] = Math.round( params[key] );
-	} );
+			params[key] = Math.round( params[key] );
+		} );
 
-	if ( typeof params.iterations !== 'number' || isNaN( params.iterations ) || params.iterations <= 0 ) {
+	if (
+		typeof params.iterations !== 'number' ||
+		isNaN( params.iterations ) || params.iterations <= 0
+	) {
 		params.iterations = defaultParams.iterations;	
 	}
 
@@ -127,7 +128,7 @@ var loadBase64Image = function ( base64URL ) {
 			resolve( image );
 		};
 
-		image.onerror = function ( err ) {
+		image.onerror = function (err) {
 			reject( err );
 		};
 		
@@ -157,7 +158,7 @@ var canvasFromImage = function ( image ) {
 
 var base64URLToBuffer = function ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
-		.then( function ( image ) {
+		.then( function (image) {
 			var buffer = canvasFromImage( image ).canvas.toBuffer();
 			resolve( buffer );
 		}, reject );
@@ -165,9 +166,11 @@ var base64URLToBuffer = function ( base64URL, options, resolve, reject ) {
 
 var base64URLToImageData = function ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
-		.then( function ( image ) {
+		.then( function (image) {
 			var size = getImageSize( image );
-			var imageData = canvasFromImage( image ).ctx.getImageData( 0, 0, size.width, size.height );
+			var imageData = canvasFromImage( image )
+				.ctx
+				.getImageData( 0, 0, size.width, size.height );
 			
 			if ( ! imageData.width ) {
 				imageData.width = size.width;
@@ -184,7 +187,7 @@ var base64URLToImageData = function ( base64URL, options, resolve, reject ) {
 // https://github.com/Automattic/node-canvas#canvaspngstream
 var base64URLToPNGStream = function ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
-		.then( function ( image ) {
+		.then( function (image) {
 			var stream$$1 = canvasFromImage( image ).canvas.pngStream();
 			resolve( stream$$1 );
 		}, function ( err ) {
@@ -203,7 +206,7 @@ var base64URLToJPGStream = function ( base64URL, options, resolve, reject ) {
 	};
 
 	loadBase64Image( base64URL )
-		.then( function ( image ) {
+		.then( function (image) {
 			var stream$$1 = canvasFromImage( image ).canvas.jpegStream( streamParams );
 			resolve( stream$$1 );
 		}, reject );
@@ -228,7 +231,9 @@ var imageDataToBase64 = function ( imageData, quality ) {
 			ctx.putImageData( imageData, 0, 0 );
 
 			canvas.toDataURL( 'image/jpeg', quality / 100, function ( err, base64URL ) {
-					if ( err ) { reject( err ); }
+					if ( err ) {
+						reject( err );
+					}
 					
 					switch ( base64URL.length % 4 ) {
 						case 3:
@@ -267,13 +272,11 @@ var reversedBase64Map = maps.reversedBase64Map;
 // base64 is 2^6, byte is 2^8, every 4 base64 values create three bytes
 var base64ToByteArray = function ( base64URL ) {	
 	var result = [ ];
-	var digitNum;
-	var currrentChar;
 	var prev;
 
 	for ( var i = 23, len = base64URL.length; i < len; i++ ) {
-		currrentChar = reversedBase64Map[ base64URL.charAt( i ) ];
-		digitNum = ( i - 23 ) % 4;
+		var currrentChar = reversedBase64Map[ base64URL.charAt( i ) ];
+		var digitNum = ( i - 23 ) % 4;
 
 		switch ( digitNum ) {
 			// case 0: first digit - do nothing, not enough info to work with
@@ -342,11 +345,10 @@ var base64Map$1 = maps.base64Map;
 var byteArrayToBase64 = function ( byteArray ) {
 	var result = [ 'data:image/jpeg;base64,' ];
 	var byteNum;
-	var currentByte;
 	var previousByte;
 
 	for ( var i = 0, len = byteArray.length; i < len; i++ ) {
-		currentByte = byteArray[i];
+		var currentByte = byteArray[i];
 		byteNum = i % 3;
 
 		switch ( byteNum ) {
@@ -406,17 +408,8 @@ var index = function ( params ) {
 	var inputFn;
 	var outputFn;
 	
-	var api = {
-		getParams: getParams,
-		getInput: getInput,
-		getOutput: getOutput
-	};
-
-	var inputMethods = {
-		fromBuffer: fromBuffer,
-		fromImageData: fromImageData,
-		fromStream: fromStream
-	};
+	var api = { getParams: getParams, getInput: getInput, getOutput: getOutput };
+	var inputMethods = { fromBuffer: fromBuffer, fromImageData: fromImageData, fromStream: fromStream };
 
 	var outputMethods = {
 		toBuffer: toBuffer,
@@ -491,7 +484,7 @@ var index = function ( params ) {
 	}
 
 	function setOutput ( fn, outputOptions, canResolve ) {
-		outputFn = function ( base64URL ) {
+		outputFn = function (base64URL) {
 			return new Promise( function ( resolve, reject ) {
 				if ( canResolve ) {
 					fn( base64URL, outputOptions, resolve, reject );
@@ -520,10 +513,10 @@ var index = function ( params ) {
 	function getResult () {
 		return new Promise( function ( resolve, reject ) {
 			inputFn()
-				.then( function ( imageData ) {
+				.then( function (imageData) {
 					return glitch( imageData, params );
 				}, reject )
-				.then( function ( base64URL ) {
+				.then( function (base64URL) {
 					outputFn( base64URL )
 						.then( resolve, reject );
 				}, reject );
@@ -533,7 +526,7 @@ var index = function ( params ) {
 	function glitch ( imageData, params ) {
 		return new Promise( function ( resolve, reject ) {
 			imageDataToBase64( imageData, params.quality )
-				.then( function ( base64URL ) {
+				.then(  function (base64URL) {
 					try {
 						resolve( glitchImageData( imageData, base64URL, params ) );
 					} catch ( err ) {

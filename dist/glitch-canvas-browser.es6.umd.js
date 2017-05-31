@@ -12,7 +12,6 @@ var clone = function ( obj ) {
 	let result = false;
 	
 	if ( typeof obj !== 'undefined' ) {
-
 		try {
 			result = JSON.parse( JSON.stringify( obj ) );
 		} catch ( e ) { }
@@ -36,21 +35,23 @@ var sanitizeInput = function ( params ) {
 		params = { };
 	}
 
-	let defaultKeys = Object
+	Object
 		.keys( defaultParams )
-		.filter( function ( key ) { return key !== 'iterations'; } );
-
-	defaultKeys.forEach( function ( key ) {
-		if ( typeof params[key] !== 'number' || isNaN( params[key] ) ) {
-			params[key] = defaultParams[key];
-		} else {
-			params[key] = clamp( params[key], 0, 100 );
-		}
+		.filter( key => key !== 'iterations' )
+		.forEach( key => {
+			if ( typeof params[key] !== 'number' || isNaN( params[key] ) ) {
+				params[key] = defaultParams[key];
+			} else {
+				params[key] = clamp( params[key], 0, 100 );
+			}
 		
-		params[key] = Math.round( params[key] );
-	} );
+			params[key] = Math.round( params[key] );
+		} );
 
-	if ( typeof params.iterations !== 'number' || isNaN( params.iterations ) || params.iterations <= 0 ) {
+	if (
+		typeof params.iterations !== 'number' ||
+		isNaN( params.iterations ) || params.iterations <= 0
+	) {
 		params.iterations = defaultParams.iterations;	
 	}
 
@@ -132,14 +133,14 @@ var imageToImageData = function ( image ) {
 const Image$2 = Canvas$1.Image;
 
 var loadBase64Image = function ( base64URL ) {
-	return new Promise( function ( resolve, reject ) {
-		let image = new Image$2();
+	return new Promise( ( resolve, reject ) => {
+		const image = new Image$2();
 		
-		image.onload = function () {
+		image.onload = () => {
 			resolve( image );
 		};
 
-		image.onerror = function ( err ) {
+		image.onerror = err => {
 			reject( err );
 		};
 		
@@ -160,9 +161,9 @@ var getImageSize = function ( image ) {
 };
 
 var canvasFromImage = function ( image ) {
-	let size = getImageSize( image );
-	let canvas = new Canvas$1( size.width, size.height );
-	let ctx = canvas.getContext( '2d' );
+	const size = getImageSize( image );
+	const canvas = new Canvas$1( size.width, size.height );
+	const ctx = canvas.getContext( '2d' );
 	
 	ctx.drawImage( image, 0, 0, size.width, size.height );
 		
@@ -174,9 +175,11 @@ var canvasFromImage = function ( image ) {
 
 var base64URLToImageData = function ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
-		.then( function ( image ) {
-			let size = getImageSize( image );
-			let imageData = canvasFromImage( image ).ctx.getImageData( 0, 0, size.width, size.height );
+		.then( image => {
+			const size = getImageSize( image );
+			const imageData = canvasFromImage( image )
+				.ctx
+				.getImageData( 0, 0, size.width, size.height );
 			
 			if ( ! imageData.width ) {
 				imageData.width = size.width;
@@ -202,7 +205,7 @@ var isImageData = function ( imageData ) {
 };
 
 var imageDataToBase64 = function ( imageData, quality ) {
-	return new Promise ( function ( resolve, reject ) {
+	return new Promise ( ( resolve, reject ) => {
 		if ( isImageData( imageData ) ) {
 			const canvas = new Canvas$1( imageData.width, imageData.height );
 			const ctx = canvas.getContext( '2d' );
@@ -221,7 +224,7 @@ const base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456
 const base64Map = base64Chars.split( '' );
 const reversedBase64Map$1 = { };
 
-base64Map.forEach( function ( val, key ) { reversedBase64Map$1[val] = key; } );
+base64Map.forEach( ( val, key ) => { reversedBase64Map$1[val] = key; } );
 
 // https://github.com/mutaphysis/smackmyglitchupjs/blob/master/glitch.html
 // base64 is 2^6, byte is 2^8, every 4 base64 values create three bytes
@@ -246,31 +249,18 @@ function glitch ( params ) {
 	let inputFn;
 	let outputFn;
 
-	let worker = new Worker( URL.createObjectURL(new Blob(["var isImageData = function ( imageData ) {\n\treturn (\n\t\timageData && \n\t\ttypeof imageData.width === 'number' &&\n\t\ttypeof imageData.height === 'number' &&\n\t\timageData.data &&\n\t\ttypeof imageData.data.length === 'number' &&\n\t\ttypeof imageData.data === 'object'\n\t);\n};\n\nconst base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';\nconst base64Map = base64Chars.split( '' );\nconst reversedBase64Map$1 = { };\n\nbase64Map.forEach( function ( val, key ) { reversedBase64Map$1[val] = key; } );\n\nvar maps = {\n\tbase64Map,\n\treversedBase64Map: reversedBase64Map$1\n};\n\nconst reversedBase64Map = maps.reversedBase64Map;\n\n// https://github.com/mutaphysis/smackmyglitchupjs/blob/master/glitch.html\n// base64 is 2^6, byte is 2^8, every 4 base64 values create three bytes\nvar base64ToByteArray = function ( base64URL ) {\t\n\tvar result = [ ];\n\tvar digitNum;\n\tvar currrentChar;\n\tvar prev;\n\n\tfor ( var i = 23, len = base64URL.length; i < len; i++ ) {\n\t\tcurrrentChar = reversedBase64Map[ base64URL.charAt( i ) ];\n\t\tdigitNum = ( i - 23 ) % 4;\n\n\t\tswitch ( digitNum ) {\n\t\t\t// case 0: first digit - do nothing, not enough info to work with\n\t\t\tcase 1: // second digit\n\t\t\t\tresult.push( prev << 2 | currrentChar >> 4 );\n\t\t\t\tbreak;\n\t\t\t\n\t\t\tcase 2: // third digit\n\t\t\t\tresult.push( ( prev & 0x0f ) << 4 | currrentChar >> 2 );\n\t\t\t\tbreak;\n\t\t\t\n\t\t\tcase 3: // fourth digit\n\t\t\t\tresult.push( ( prev & 3 ) << 6 | currrentChar );\n\t\t\t\tbreak;\n\t\t}\n\n\t\tprev = currrentChar;\n\t}\n\n\treturn result;\n};\n\n// http://stackoverflow.com/a/10424014/229189\n\nvar jpgHeaderLength = function ( byteArr ) {\n\tvar result = 417;\n\n\tfor ( var i = 0, len = byteArr.length; i < len; i++ ) {\n\t\tif ( byteArr[i] === 0xFF && byteArr[i + 1] === 0xDA ) {\n\t\t\tresult = i + 2;\n\t\t\tbreak;\n\t\t}\n\t}\n\n\treturn result;\n};\n\nvar glitchByteArray = function ( byteArray, seed, amount, iterationCount ) {\n\tlet headerLength = jpgHeaderLength( byteArray );\n\tlet maxIndex = byteArray.length - headerLength - 4;\n\n\tlet amountPercent = amount / 100;\n\tlet seedPercent   = seed / 100;\n\n\tfor ( var iterationIndex = 0; iterationIndex < iterationCount; iterationIndex++ ) {\n\t\tlet minPixelIndex = ( maxIndex / iterationCount * iterationIndex ) | 0;\n\t\tlet maxPixelIndex = ( maxIndex / iterationCount * ( iterationIndex + 1 ) ) | 0;\n\t\t\n\t\tlet delta = maxPixelIndex - minPixelIndex;\n\t\tlet pixelIndex = ( minPixelIndex + delta * seedPercent ) | 0;\n\n\t\tif ( pixelIndex > maxIndex ) {\n\t\t\tpixelIndex = maxIndex;\n\t\t}\n\n\t\tlet indexInByteArray = ~~( headerLength + pixelIndex );\n\n\t\tbyteArray[indexInByteArray] = ~~( amountPercent * 256 );\n\t}\n\n\treturn byteArray;\n};\n\nconst base64Map$1 = maps.base64Map;\n\nvar byteArrayToBase64 = function ( byteArray ) {\n\tlet result = [ 'data:image/jpeg;base64,' ];\n\tlet byteNum;\n\tlet currentByte;\n\tlet previousByte;\n\n\tfor ( var i = 0, len = byteArray.length; i < len; i++ ) {\n\t\tcurrentByte = byteArray[i];\n\t\tbyteNum = i % 3;\n\n\t\tswitch ( byteNum ) {\n\t\t\tcase 0: // first byte\n\t\t\t\tresult.push( base64Map$1[ currentByte >> 2 ] );\n\t\t\t\tbreak;\n\t\t\tcase 1: // second byte\n\t\t\t\tresult.push( base64Map$1[( previousByte & 3 ) << 4 | ( currentByte >> 4 )] );\n\t\t\t\tbreak;\n\t\t\tcase 2: // third byte\n\t\t\t\tresult.push( base64Map$1[( previousByte & 0x0f ) << 2 | ( currentByte >> 6 )] );\n\t\t\t\tresult.push( base64Map$1[currentByte & 0x3f] );\n\t\t\t\tbreak;\n\t\t}\n\n\t\tpreviousByte = currentByte;\n\t}\n\n\tif ( byteNum === 0 ) {\n\t\tresult.push( base64Map$1[( previousByte & 3 ) << 4] );\n\t\tresult.push( '==' );\n\t} else {\n\t\tif ( byteNum === 1 ) {\n\t\t\tresult.push( base64Map$1[( previousByte & 0x0f ) << 2] );\n\t\t\tresult.push( '=' );\n\t\t}\n\t}\n\n\treturn result.join( '' );\n};\n\nvar glitchImageData = function ( imageData, base64URL, params ) {\n\tif ( isImageData( imageData ) ) {\n\t\tlet byteArray = base64ToByteArray( base64URL );\n\t\tlet glitchedByteArray = glitchByteArray( byteArray, params.seed, params.amount, params.iterations );\n\t\tlet glitchedBase64URL = byteArrayToBase64( glitchedByteArray );\n\t\treturn glitchedBase64URL;\n\t} else {\n\t\tthrow new Error( 'glitchImageData: imageData seems to be corrupt.' );\n\t\treturn;\n\t}\n};\n\nonmessage = function ( msg ) {\n\tconst imageData = msg.data.imageData;\n\tconst params = msg.data.params;\n\tconst base64URL = msg.data.base64URL;\n\n\tif ( imageData && base64URL && params ) {\n\t\ttry {\n\t\t\t// phantomjs seems to have some memory loss so we need to make sure\n\t\t\tif ( typeof imageData.width === 'undefined' && typeof msg.data.imageDataWidth === 'number' ) {\n\t\t\t\timageData.width = msg.data.imageDataWidth;\n\t\t\t}\n\n\t\t\tif ( typeof imageData.height === 'undefined' && typeof msg.data.imageDataHeight === 'number' ) {\n\t\t\t\timageData.height = msg.data.imageDataHeight;\n\t\t\t}\n\n\t\t\tconst glitchedBase64URL = glitchImageData( imageData, base64URL, params );\n\t\t\tsuccess( glitchedBase64URL );\n\n\t\t} catch ( err ) {\n\t\t\tfail( err );\n\t\t}\n\n\t} else {\n\t\tif ( msg.data.imageData ) {\n\t\t\tfail( 'Parameters are missing.' );\n\t\t} else {\n\t\t\tfail( 'ImageData is missing.' );\n\t\t}\n\t}\n\t\n\tself.close();\n};\n\nfunction fail ( err ) {\n\tself.postMessage( { err: err.message || err } );\n}\n\nfunction success ( base64URL ) {\n\tself.postMessage( { base64URL: base64URL } );\n}\n"],{type:'text/javascript'})) );//work( glitchWorker );
+	const worker = new Worker( URL.createObjectURL(new Blob(["var isImageData = function ( imageData ) {\n\treturn (\n\t\timageData && \n\t\ttypeof imageData.width === 'number' &&\n\t\ttypeof imageData.height === 'number' &&\n\t\timageData.data &&\n\t\ttypeof imageData.data.length === 'number' &&\n\t\ttypeof imageData.data === 'object'\n\t);\n};\n\nconst base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';\nconst base64Map = base64Chars.split( '' );\nconst reversedBase64Map$1 = { };\n\nbase64Map.forEach( ( val, key ) => { reversedBase64Map$1[val] = key; } );\n\nvar maps = {\n\tbase64Map,\n\treversedBase64Map: reversedBase64Map$1\n};\n\nconst reversedBase64Map = maps.reversedBase64Map;\n\n// https://github.com/mutaphysis/smackmyglitchupjs/blob/master/glitch.html\n// base64 is 2^6, byte is 2^8, every 4 base64 values create three bytes\nvar base64ToByteArray = function ( base64URL ) {\t\n\tconst result = [ ];\n\tlet prev;\n\n\tfor ( var i = 23, len = base64URL.length; i < len; i++ ) {\n\t\tconst currrentChar = reversedBase64Map[ base64URL.charAt( i ) ];\n\t\tconst digitNum = ( i - 23 ) % 4;\n\n\t\tswitch ( digitNum ) {\n\t\t\t// case 0: first digit - do nothing, not enough info to work with\n\t\t\tcase 1: // second digit\n\t\t\t\tresult.push( prev << 2 | currrentChar >> 4 );\n\t\t\t\tbreak;\n\t\t\t\n\t\t\tcase 2: // third digit\n\t\t\t\tresult.push( ( prev & 0x0f ) << 4 | currrentChar >> 2 );\n\t\t\t\tbreak;\n\t\t\t\n\t\t\tcase 3: // fourth digit\n\t\t\t\tresult.push( ( prev & 3 ) << 6 | currrentChar );\n\t\t\t\tbreak;\n\t\t}\n\n\t\tprev = currrentChar;\n\t}\n\n\treturn result;\n};\n\n// http://stackoverflow.com/a/10424014/229189\n\nvar jpgHeaderLength = function ( byteArr ) {\n\tlet result = 417;\n\n\tfor ( var i = 0, len = byteArr.length; i < len; i++ ) {\n\t\tif ( byteArr[i] === 0xFF && byteArr[i + 1] === 0xDA ) {\n\t\t\tresult = i + 2;\n\t\t\tbreak;\n\t\t}\n\t}\n\n\treturn result;\n};\n\nvar glitchByteArray = function ( byteArray, seed, amount, iterationCount ) {\n\tconst headerLength = jpgHeaderLength( byteArray );\n\tconst maxIndex = byteArray.length - headerLength - 4;\n\n\tconst amountPercent = amount / 100;\n\tconst seedPercent   = seed / 100;\n\n\tfor ( var iterationIndex = 0; iterationIndex < iterationCount; iterationIndex++ ) {\n\t\tconst minPixelIndex = ( maxIndex / iterationCount * iterationIndex ) | 0;\n\t\tconst maxPixelIndex = ( maxIndex / iterationCount * ( iterationIndex + 1 ) ) | 0;\n\t\t\n\t\tconst delta = maxPixelIndex - minPixelIndex;\n\t\tlet pixelIndex = ( minPixelIndex + delta * seedPercent ) | 0;\n\n\t\tif ( pixelIndex > maxIndex ) {\n\t\t\tpixelIndex = maxIndex;\n\t\t}\n\n\t\tconst indexInByteArray = ~~( headerLength + pixelIndex );\n\n\t\tbyteArray[indexInByteArray] = ~~( amountPercent * 256 );\n\t}\n\n\treturn byteArray;\n};\n\nconst base64Map$1 = maps.base64Map;\n\nvar byteArrayToBase64 = function ( byteArray ) {\n\tconst result = [ 'data:image/jpeg;base64,' ];\n\tlet byteNum;\n\tlet previousByte;\n\n\tfor ( var i = 0, len = byteArray.length; i < len; i++ ) {\n\t\tconst currentByte = byteArray[i];\n\t\tbyteNum = i % 3;\n\n\t\tswitch ( byteNum ) {\n\t\t\tcase 0: // first byte\n\t\t\t\tresult.push( base64Map$1[ currentByte >> 2 ] );\n\t\t\t\tbreak;\n\t\t\tcase 1: // second byte\n\t\t\t\tresult.push( base64Map$1[( previousByte & 3 ) << 4 | ( currentByte >> 4 )] );\n\t\t\t\tbreak;\n\t\t\tcase 2: // third byte\n\t\t\t\tresult.push( base64Map$1[( previousByte & 0x0f ) << 2 | ( currentByte >> 6 )] );\n\t\t\t\tresult.push( base64Map$1[currentByte & 0x3f] );\n\t\t\t\tbreak;\n\t\t}\n\n\t\tpreviousByte = currentByte;\n\t}\n\n\tif ( byteNum === 0 ) {\n\t\tresult.push( base64Map$1[( previousByte & 3 ) << 4] );\n\t\tresult.push( '==' );\n\t} else {\n\t\tif ( byteNum === 1 ) {\n\t\t\tresult.push( base64Map$1[( previousByte & 0x0f ) << 2] );\n\t\t\tresult.push( '=' );\n\t\t}\n\t}\n\n\treturn result.join( '' );\n};\n\nvar glitchImageData = function ( imageData, base64URL, params ) {\n\tif ( isImageData( imageData ) ) {\n\t\tconst byteArray = base64ToByteArray( base64URL );\n\t\tconst glitchedByteArray = glitchByteArray( byteArray, params.seed, params.amount, params.iterations );\n\t\tconst glitchedBase64URL = byteArrayToBase64( glitchedByteArray );\n\t\treturn glitchedBase64URL;\n\t} else {\n\t\tthrow new Error( 'glitchImageData: imageData seems to be corrupt.' );\n\t\treturn;\n\t}\n};\n\nonmessage = msg => {\n\tconst imageData = msg.data.imageData;\n\tconst params = msg.data.params;\n\tconst base64URL = msg.data.base64URL;\n\n\tif ( imageData && base64URL && params ) {\n\t\ttry {\n\t\t\t// phantomjs seems to have some memory loss so we need to make sure\n\t\t\tif ( typeof imageData.width === 'undefined' && typeof msg.data.imageDataWidth === 'number' ) {\n\t\t\t\timageData.width = msg.data.imageDataWidth;\n\t\t\t}\n\n\t\t\tif ( typeof imageData.height === 'undefined' && typeof msg.data.imageDataHeight === 'number' ) {\n\t\t\t\timageData.height = msg.data.imageDataHeight;\n\t\t\t}\n\n\t\t\tconst glitchedBase64URL = glitchImageData( imageData, base64URL, params );\n\t\t\tsuccess( glitchedBase64URL );\n\n\t\t} catch ( err ) {\n\t\t\tfail( err );\n\t\t}\n\n\t} else {\n\t\tif ( msg.data.imageData ) {\n\t\t\tfail( 'Parameters are missing.' );\n\t\t} else {\n\t\t\tfail( 'ImageData is missing.' );\n\t\t}\n\t}\n\t\n\tself.close();\n};\n\nfunction fail ( err ) {\n\tself.postMessage( { err: err.message || err } );\n}\n\nfunction success ( base64URL ) {\n\tself.postMessage( { base64URL: base64URL } );\n}\n"],{type:'text/javascript'})) );
 	
-	let api = {
-		getParams,
-		getInput,
-		getOutput
-	};
-
-	let inputMethods = {
-		fromImageData,
-		fromImage
-	};
-
-	let outputMethods = {
-		toImage,
-		toDataURL,
-		toImageData
-	};
+	const api = { getParams, getInput, getOutput };
+	const inputMethods = { fromImageData, fromImage };
+	const outputMethods = { toImage, toDataURL, toImageData };
 
 	function getParams () {
 		return params;
 	}
 
 	function getInput () {
-		var result = objectAssign( { }, api );
+		const result = objectAssign( { }, api );
 
 		if ( ! inputFn ) {
 			objectAssign( result, inputMethods );
@@ -280,7 +270,7 @@ function glitch ( params ) {
 	}
 
 	function getOutput () {
-		var result = objectAssign( { }, api );
+		const result = objectAssign( { }, api );
 
 		if ( ! outputFn ) {
 			objectAssign( result, outputMethods );
@@ -299,8 +289,8 @@ function glitch ( params ) {
 	function toImageData ( outputOptions ) { return setOutput( base64URLToImageData, outputOptions, true ); }
 
 	function setInput ( fn, inputOptions, canResolve ) {		
-		inputFn = function () {
-			return new Promise( function ( resolve, reject ) {
+		inputFn = () => {
+			return new Promise( ( resolve, reject ) => {
 				if ( canResolve ) {
 					fn( inputOptions, resolve, reject );
 				} else {
@@ -325,8 +315,8 @@ function glitch ( params ) {
 	}
 
 	function setOutput ( fn, outputOptions, canResolve ) {
-		outputFn = function ( base64URL ) {
-			return new Promise( function ( resolve, reject ) {
+		outputFn = base64URL => {
+			return new Promise( ( resolve, reject ) => {
 				if ( canResolve ) {
 					fn( base64URL, outputOptions, resolve, reject );
 				} else {
@@ -352,12 +342,12 @@ function glitch ( params ) {
 	}
 
 	function getResult () {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			inputFn()
-				.then( function ( imageData ) {
+				.then( imageData => {
 					return glitch( imageData, params );
 				}, reject )
-				.then( function ( base64URL ) {
+				.then( base64URL => {
 					outputFn( base64URL )
 						.then( resolve, reject );
 				}, reject );
@@ -365,9 +355,9 @@ function glitch ( params ) {
 	}
 
 	function glitch ( imageData, params ) {
-		return new Promise( function ( resolve, reject ) {
+		return new Promise( ( resolve, reject ) => {
 			imageDataToBase64( imageData, params.quality )
-				.then( function ( base64URL ) {
+				.then( base64URL => {
 					return glitchInWorker( imageData, base64URL, params );
 				}, reject )
 				.then( resolve, reject );
@@ -375,8 +365,8 @@ function glitch ( params ) {
 	}
 
 	function glitchInWorker ( imageData, base64URL, params ) {
-		return new Promise( function ( resolve, reject ) {
-			worker.addEventListener( 'message', function ( event ) {
+		return new Promise( ( resolve, reject ) => {
+			worker.addEventListener( 'message', event => {
 				if ( event.data && event.data.base64URL ) {
 					resolve( event.data.base64URL );
 				} else {
