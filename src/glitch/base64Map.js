@@ -5,7 +5,6 @@ const reversedBase64Map = { };
 base64Map.forEach( function ( val, key ) { reversedBase64Map[val] = key; } );
 
 export default {
-	map: base64Map,
-	reverse: reversedBase64Map
+	base64Map,
+	reversedBase64Map
 };
-

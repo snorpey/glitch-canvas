@@ -1,4 +1,4 @@
-import Canvas from 'canvas-browserify';
+import Canvas from './canvas.js';
 import getImageSize from './getImageSize';
 
 export default function ( image ) {

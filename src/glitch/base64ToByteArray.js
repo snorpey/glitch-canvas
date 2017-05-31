@@ -1,6 +1,6 @@
-import { reverse as reverseBase64Map } from './base64Map'
+import maps from './base64Map.js';
 
-// let reverseBase64Map = base64.reverse
+const reversedBase64Map = maps.reversedBase64Map;
 
 // https://github.com/mutaphysis/smackmyglitchupjs/blob/master/glitch.html
 // base64 is 2^6, byte is 2^8, every 4 base64 values create three bytes
@@ -11,7 +11,7 @@ export default function ( base64URL ) {
 	var prev;
 
 	for ( var i = 23, len = base64URL.length; i < len; i++ ) {
-		currrentChar = reverseBase64Map[ base64URL.charAt( i ) ];
+		currrentChar = reversedBase64Map[ base64URL.charAt( i ) ];
 		digitNum = ( i - 23 ) % 4;
 
 		switch ( digitNum ) {

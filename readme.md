@@ -8,10 +8,11 @@ glitch-canvas
 downloads
 ---------
 
-* [glitch-canvas.min.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas.min.js) 12kb (4kb gzipped)
-* [glitch-canvas.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas.js) 23kb (5kb gzipped)
-* [glitch-canvas-with-polyfills.min.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas-with-polyfills.min.js) 20kb (6kb gzipped)
-* [glitch-canvas-with-polyfills.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas-with-polyfills.js) 69kb (10kb gzipped)
+* [glitch-canvas-browser.min.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas-browser.min.js) 6kb (3kb gzipped)
+* [glitch-canvas-browser.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas-browser.js) 15kb (4kb gzipped)
+* [glitch-canvas-browser-with-polyfills.min.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas-browser-with-polyfills.min.js) 14kb (5kb gzipped)
+* [glitch-canvas-browser-with-polyfills.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas-browser-with-polyfills.js) 46kb (12kb gzipped)
+* [glitch-canvas-browser.es6.min.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas-browser.es6.min.js) 7kb (3kb gzipped)
 * [glitch-canvas-master.zip](https://github.com/snorpey/glitch-canvas/archive/master.zip) 516kb
 
 ```$ bower install glitch-canvas```

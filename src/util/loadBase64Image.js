@@ -1,4 +1,6 @@
-import { Image } from 'canvas-browserify';
+import Canvas from './canvas.js';
+
+const Image = Canvas.Image;
 
 export default function ( base64URL ) {
 	return new Promise( function ( resolve, reject ) {

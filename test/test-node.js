@@ -7,7 +7,7 @@ var expect = require('expect.js');
 
 var Image = Canvas.Image;
 
-var glitch = require('../dist-node/index.js');
+var glitch = require('../dist/glitch-canvas-node.js');
 
 var imagePath = '../examples/img/lincoln.jpg';
 

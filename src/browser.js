@@ -4,8 +4,10 @@ import base64URLToImage from './output/browser/toImage';
 import base64URLToImageData from './output/toImageData';
 import imageDataToBase64 from './glitch/browser/imageDataToBase64';
 import glitchImageData from './glitch/glitchImageData';
-import work from 'webworkify';
-import glitchWorker from './workers/glitchWorker';
+
+// PROMISE_POLYFILL_HERE
+var objectAssign = Object.assign;
+
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
@@ -15,15 +17,14 @@ import glitchWorker from './workers/glitchWorker';
 //     .toImageData()
 // 
 // etc...
-// 
 
-export default function ( params ) {
+export default function glitch ( params ) {
 	params = sanitizeInput( params );
 
 	let inputFn;
 	let outputFn;
 
-	let worker = work( glitchWorker );
+	let worker = new Worker( 'workers/glitchWorker.js' );//work( glitchWorker );
 	
 	let api = {
 		getParams,
@@ -47,20 +48,20 @@ export default function ( params ) {
 	}
 
 	function getInput () {
-		var result = Object.assign( { }, api );
+		var result = objectAssign( { }, api );
 
 		if ( ! inputFn ) {
-			Object.assign( result, inputMethods );
+			objectAssign( result, inputMethods );
 		}
 
 		return result;
 	}
 
 	function getOutput () {
-		var result = Object.assign( { }, api );
+		var result = objectAssign( { }, api );
 
 		if ( ! outputFn ) {
-			Object.assign( result, outputMethods );
+			objectAssign( result, outputMethods );
 		}
 
 		return result;

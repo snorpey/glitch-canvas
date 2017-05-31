@@ -1,4 +1,4 @@
-import Canvas from 'canvas-browserify';
+import Canvas from './util/canvas.js';
 import isImageData from '../util/isImageData';
 
 export default function ( imageData ) {

@@ -1,5 +1,5 @@
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
-import Canvas from 'canvas-browserify';
+import Canvas from '../../util/canvas.js';
 
 let Image = Canvas.Image;
 

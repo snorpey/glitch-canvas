@@ -1,4 +1,5 @@
-import { map as base64Map } from './base64Map'
+import maps from './base64Map.js';
+const base64Map = maps.base64Map;
 
 export default function ( byteArray ) {
 	let result = [ 'data:image/jpeg;base64,' ];

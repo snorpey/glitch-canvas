@@ -1,14 +1,15 @@
-import Canvas from 'canvas-browserify';
+import Canvas from '../../util/canvas.js';
 import isImageData from '../../util/isImageData';
 
 export default function ( imageData, quality ) {
 	return new Promise ( function ( resolve, reject ) {
 		if ( isImageData( imageData ) ) {
-			let canvas = new Canvas( imageData.width, imageData.height );
-			let ctx = canvas.getContext( '2d' );
+			const canvas = new Canvas( imageData.width, imageData.height );
+			const ctx = canvas.getContext( '2d' );
 			ctx.putImageData( imageData, 0, 0 );
 
-			let base64URL = canvas.toDataURL( 'image/jpeg', quality / 100 );
+			const base64URL = canvas.toDataURL( 'image/jpeg', quality / 100 );
+
 			resolve( base64URL );
 		} else {
 			reject( new Error( 'object is not valid imageData' ) );
