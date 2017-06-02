@@ -1,9 +1,8 @@
 [![Build Status](https://travis-ci.org/snorpey/glitch-canvas.png?branch=master)](https://travis-ci.org/snorpey/glitch-canvas)
+[![Greenkeeper badge](https://badges.greenkeeper.io/snorpey/glitch-canvas.svg)](https://greenkeeper.io/)
 
 glitch-canvas
 =============
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/snorpey/glitch-canvas.svg)](https://greenkeeper.io/)
 
 downloads
 ---------
@@ -14,8 +13,6 @@ downloads
 * [glitch-canvas-browser-with-polyfills.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas-browser-with-polyfills.js) 46kb (12kb gzipped)
 * [glitch-canvas-browser.es6.min.js](https://raw.githubusercontent.com/snorpey/glitch-canvas/master/dist/glitch-canvas-browser.es6.min.js) 7kb (3kb gzipped)
 * [glitch-canvas-master.zip](https://github.com/snorpey/glitch-canvas/archive/master.zip) 516kb
-
-```$ bower install glitch-canvas```
 
 ```$ npm install glitch-canvas```
 
