@@ -52,7 +52,7 @@
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-replace": "^1.1.1",
-    "uglify-es": "^3.0.14",
+    "uglify-es": "^3.1.6",
     "uglify-js": "^3.0.14"
   }
 }
