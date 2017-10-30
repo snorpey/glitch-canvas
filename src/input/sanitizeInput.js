@@ -25,7 +25,7 @@ export default function ( params ) {
 
 	if (
 		typeof params.iterations !== 'number' ||
-		isNaN( params.iterations ) || params.iterations <= 0
+		isNaN( params.iterations ) || params.iterations <= 0
 	) {
 		params.iterations = defaultParams.iterations;	
 	}

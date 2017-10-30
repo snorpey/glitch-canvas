@@ -66,7 +66,7 @@ export default function glitch ( params ) {
 	function setInput ( fn, inputOptions, canResolve ) {		
 		inputFn = () => {
 			return new Promise( ( resolve, reject ) => {
-				if ( canResolve ) {
+				if ( canResolve ) {
 					fn( inputOptions, resolve, reject )
 				} else {
 					if ( fn === noTransform ) {
@@ -92,7 +92,7 @@ export default function glitch ( params ) {
 	function setOutput ( fn, outputOptions, canResolve ) {
 		outputFn = base64URL => {
 			return new Promise( ( resolve, reject ) => {
-				if ( canResolve ) {
+				if ( canResolve ) {
 					fn( base64URL, outputOptions, resolve, reject );
 				} else {
 					if ( fn === noTransform ) {
