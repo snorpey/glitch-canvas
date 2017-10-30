@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/snorpey/glitch-canvas#readme",
   "dependencies": {
-    "canvas": "^1.6.5"
+    "canvas": "^1.6.7"
   },
   "devDependencies": {
     "commander": "^2.9.0",
