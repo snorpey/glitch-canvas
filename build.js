@@ -52,7 +52,6 @@ if ( polyfill ) {
 
 	var promisePolyfillStr = `
 	import p from 'es6-promise';
-	console.log( 'p', p );
 	p.polyfill();
 	`;
 	
@@ -93,7 +92,7 @@ function processES6File ( filePath, format = 'es', moduleName ) {
 	}
 
 	return rollup.rollup( rollupOptions )
-		.then( ( bundle ) => {
+		.then( bundle => {
 			const bundleOpts = { format };
 
 			if ( moduleName ) {
@@ -109,6 +108,8 @@ function processWorkerFile ( filePath, format = 'es' ) {
 		entry: filePath,
 		plugins: [
 			replace( stringsToReplace[env] || { } ),
+			nodeResolve(),
+			commonjs()
 		]
 	};
 
@@ -117,7 +118,7 @@ function processWorkerFile ( filePath, format = 'es' ) {
 	}
 
 	return rollup.rollup( rollupOptions )
-		.then( ( bundle ) => {
+		.then( bundle => {
 			const bundleOpts = { format };
 
 			if ( moduleName ) {
