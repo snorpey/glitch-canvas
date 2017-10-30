@@ -46,6 +46,7 @@
     "expect.js": "^0.3.1",
     "mocha": "^3.4.1",
     "mocha-phantomjs-core": "^2.1.1",
+    "phantomjs": "^2.1.7",
     "object-assign": "^4.1.1",
     "rollup": "^0.41.6",
     "rollup-plugin-buble": "^0.15.0",
