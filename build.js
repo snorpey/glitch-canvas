@@ -52,7 +52,6 @@ if ( polyfill ) {
 
 	var promisePolyfillStr = `
 	import p from 'es6-promise';
-	console.log( 'p', p );
 	p.polyfill();
 	`;
 	
@@ -62,7 +61,7 @@ if ( polyfill ) {
 console.log( 'building with options: env:', env, 'es6:', ! es5Build, 'minify:', minifyBuild, 'umd', bundleUMD );
 
 createES6Bundle( globalPath + mainFilePath )
-	.then( ( fileContent ) => {
+	.then( fileContent => {
 		console.log( 'build complete. file saved to ' + buildPath + getOutputFileName( mainFilePath ) );
 	} );
 
@@ -70,17 +69,17 @@ function createES6Bundle ( filePath ) {
 	const format = ( es5Build || bundleUMD ) ? 'umd' : 'es';
 
 	return processES6File( filePath, format, moduleName )
-		.then( ( fileContent ) => {
+		.then( fileContent => {
 			return processFileContent( fileContent );
 		} )
-		.then( ( fileContent ) => {
+		.then( fileContent => {
 			return saveFile( buildPath + getOutputFileName( mainFilePath ), fileContent );
 		} );
 }
 
 function processES6File ( filePath, format = 'es', moduleName ) {
 	const rollupOptions = {
-		entry: filePath,
+		input: filePath,
 		plugins: [
 			replace( stringsToReplace[env] || { } ),
 			nodeResolve(),
@@ -93,22 +92,27 @@ function processES6File ( filePath, format = 'es', moduleName ) {
 	}
 
 	return rollup.rollup( rollupOptions )
-		.then( ( bundle ) => {
+		.then( bundle => {
 			const bundleOpts = { format };
 
 			if ( moduleName ) {
-				bundleOpts.moduleName = moduleName;
+				bundleOpts.name = moduleName;
 			}
 
-			return bundle.generate( bundleOpts ).code;
+			return bundle.generate( bundleOpts )
+				.then( bundleData => {
+					return bundleData.code;
+				} );
 		} );
 }
 
 function processWorkerFile ( filePath, format = 'es' ) {
 	const rollupOptions = {
-		entry: filePath,
+		input: filePath,
 		plugins: [
 			replace( stringsToReplace[env] || { } ),
+			nodeResolve(),
+			commonjs()
 		]
 	};
 
@@ -117,14 +121,17 @@ function processWorkerFile ( filePath, format = 'es' ) {
 	}
 
 	return rollup.rollup( rollupOptions )
-		.then( ( bundle ) => {
+		.then( bundle => {
 			const bundleOpts = { format };
 
 			if ( moduleName ) {
-				bundleOpts.moduleName = moduleName;
+				bundleOpts.name = moduleName;
 			}
 
-			return bundle.generate( bundleOpts ).code;
+			return bundle.generate( bundleOpts )
+				.then( bundleData => {
+					return bundleData.code;
+				} );
 		} );
 }
 
