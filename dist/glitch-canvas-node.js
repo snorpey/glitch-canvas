@@ -4,7 +4,7 @@
 	(global.glitch = factory(global.stream));
 }(this, (function (stream) { 'use strict';
 
-stream = 'default' in stream ? stream['default'] : stream;
+stream = stream && stream.hasOwnProperty('default') ? stream['default'] : stream;
 
 var clamp = function ( value, min, max ) {
 	return value < min ? min : value > max ? max : value;
@@ -16,7 +16,7 @@ var clone = function ( obj ) {
 	if ( typeof obj !== 'undefined' ) {
 		try {
 			result = JSON.parse( JSON.stringify( obj ) );
-		} catch ( e ) { }
+		} catch ( e ) { }
 	}
 	
 	return result;
@@ -52,7 +52,7 @@ var sanitizeInput = function ( params ) {
 
 	if (
 		typeof params.iterations !== 'number' ||
-		isNaN( params.iterations ) || params.iterations <= 0
+		isNaN( params.iterations ) || params.iterations <= 0
 	) {
 		params.iterations = defaultParams.iterations;	
 	}
@@ -460,7 +460,7 @@ var index = function ( params ) {
 	function setInput ( fn, inputOptions, canResolve ) {		
 		inputFn = function () {
 			return new Promise( function ( resolve, reject ) {
-				if ( canResolve ) {
+				if ( canResolve ) {
 					fn( inputOptions, resolve, reject );
 				} else {
 					if ( fn === noTransform ) {
@@ -486,7 +486,7 @@ var index = function ( params ) {
 	function setOutput ( fn, outputOptions, canResolve ) {
 		outputFn = function (base64URL) {
 			return new Promise( function ( resolve, reject ) {
-				if ( canResolve ) {
+				if ( canResolve ) {
 					fn( base64URL, outputOptions, resolve, reject );
 				} else {
 					if ( fn === noTransform ) {
