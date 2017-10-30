@@ -61,7 +61,7 @@ if ( polyfill ) {
 console.log( 'building with options: env:', env, 'es6:', ! es5Build, 'minify:', minifyBuild, 'umd', bundleUMD );
 
 createES6Bundle( globalPath + mainFilePath )
-	.then( ( fileContent ) => {
+	.then( fileContent => {
 		console.log( 'build complete. file saved to ' + buildPath + getOutputFileName( mainFilePath ) );
 	} );
 
@@ -69,10 +69,10 @@ function createES6Bundle ( filePath ) {
 	const format = ( es5Build || bundleUMD ) ? 'umd' : 'es';
 
 	return processES6File( filePath, format, moduleName )
-		.then( ( fileContent ) => {
+		.then( fileContent => {
 			return processFileContent( fileContent );
 		} )
-		.then( ( fileContent ) => {
+		.then( fileContent => {
 			return saveFile( buildPath + getOutputFileName( mainFilePath ), fileContent );
 		} );
 }
@@ -99,7 +99,10 @@ function processES6File ( filePath, format = 'es', moduleName ) {
 				bundleOpts.moduleName = moduleName;
 			}
 
-			return bundle.generate( bundleOpts ).code;
+			return bundle.generate( bundleOpts )
+				.then( bundleData => {
+					return bundleData.code;
+				} );
 		} );
 }
 
@@ -125,7 +128,10 @@ function processWorkerFile ( filePath, format = 'es' ) {
 				bundleOpts.moduleName = moduleName;
 			}
 
-			return bundle.generate( bundleOpts ).code;
+			return bundle.generate( bundleOpts )
+				.then( bundleData => {
+					return bundleData.code;
+				} );;
 		} );
 }
 
