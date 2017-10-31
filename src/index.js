@@ -1,7 +1,7 @@
 import sanitizeInput from './input/sanitizeInput';
 import fromBufferToImageData from './input/node/fromBuffer';
 import fromStreamToImageData from './input/node/fromStream';
-import base64URLToBuffer from './output/node/toBuffer';
+import base64URLToBuffer from './output/node/toBuffer';
 import base64URLToImageData from './output/toImageData';
 import base64URLToPNGStream from './output/node/toPNGStream';
 import base64URLToJPGStream from './output/node/toJPGStream';
@@ -76,7 +76,7 @@ export default function ( params ) {
 	function setInput ( fn, inputOptions, canResolve ) {		
 		inputFn = () => {
 			return new Promise( ( resolve, reject ) => {
-				if ( canResolve ) {
+				if ( canResolve ) {
 					fn( inputOptions, resolve, reject )
 				} else {
 					if ( fn === noTransform ) {
@@ -102,7 +102,7 @@ export default function ( params ) {
 	function setOutput ( fn, outputOptions, canResolve ) {
 		outputFn = base64URL => {
 			return new Promise( ( resolve, reject ) => {
-				if ( canResolve ) {
+				if ( canResolve ) {
 					fn( base64URL, outputOptions, resolve, reject );
 				} else {
 					if ( fn === noTransform ) {

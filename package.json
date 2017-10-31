@@ -1,6 +1,6 @@
 {
   "name": "glitch-canvas",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "JavaScript library for applying a glitch effect to a canvas element",
   "main": "dist/glitch-canvas-node.js",
   "browser": "dist/glitch-canvas-browser.js",
@@ -38,20 +38,21 @@
   },
   "homepage": "https://github.com/snorpey/glitch-canvas#readme",
   "dependencies": {
-    "canvas": "^1.6.5"
+    "canvas": "^1.6.7"
   },
   "devDependencies": {
     "commander": "^2.9.0",
     "es6-promise": "^4.1.0",
     "expect.js": "^0.3.1",
-    "mocha": "^3.4.1",
+    "mocha": "^4.0.0",
     "mocha-phantomjs-core": "^2.1.1",
+    "phantomjs": "^2.1.7",
     "object-assign": "^4.1.1",
-    "rollup": "^0.45.2",
-    "rollup-plugin-buble": "^0.15.0",
+    "rollup": "^0.50.0",
+    "rollup-plugin-buble": "^0.16.0",
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-replace": "^1.1.1",
+    "rollup-plugin-replace": "^1.2.1",
     "uglify-es": "^3.0.14",
     "uglify-js": "^3.0.14"
   }

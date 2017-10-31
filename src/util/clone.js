@@ -4,7 +4,7 @@ export default function ( obj ) {
 	if ( typeof obj !== 'undefined' ) {
 		try {
 			result = JSON.parse( JSON.stringify( obj ) );
-		} catch ( e ) { }
+		} catch ( e ) { }
 	}
 	
 	return result;
