@@ -285,7 +285,7 @@ fs.readFile( './lincoln.jpg', function ( err, buffer ) {
 				if ( err ) { throw err; }
 				console.log( 'created a pdf file.' );
 			} );
-		} );
+		} );
 } );
 ```
 
