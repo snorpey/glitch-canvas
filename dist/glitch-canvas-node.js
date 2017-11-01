@@ -62,6 +62,8 @@ var sanitizeInput = function ( params ) {
 	return params;
 };
 
+// var Canvas = require( 'canvas' );;
+// import Canvas from './browser.js';
 var Canvas = require( 'canvas' );
 
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
@@ -392,6 +394,9 @@ var glitchImageData = function ( imageData, base64URL, params ) {
 	}
 };
 
+// import objectAssign from 'object-assign'
+var objectAssign = Object.assign;
+
 // constructing an object that allows for a chained interface.
 // for example stuff like:
 // 
@@ -425,20 +430,20 @@ var index = function ( params ) {
 	}
 
 	function getInput () {
-		var result = Object.assign( { }, api );
+		var result = objectAssign( { }, api );
 
 		if ( ! inputFn ) {
-			Object.assign( result, inputMethods );
+			objectAssign( result, inputMethods );
 		}
 
 		return result;
 	}
 
 	function getOutput () {
-		var result = Object.assign( { }, api );
+		var result = objectAssign( { }, api );
 
 		if ( ! outputFn ) {
-			Object.assign( result, outputMethods );
+			objectAssign( result, outputMethods );
 		}
 
 		return result;

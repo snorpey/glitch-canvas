@@ -104,6 +104,9 @@ Object.defineProperties( Canvas$1.prototype, prototypeAccessors );
 
 Canvas$1.Image = Image;
 
+// import Canvas from 'canvas';
+// import Canvas from './browser.js';
+
 var imageToImageData = function ( image ) {
 	if ( image instanceof HTMLImageElement ) {
 		// http://stackoverflow.com/a/3016076/229189
@@ -231,8 +234,8 @@ base64Map.forEach( function ( val, key ) {  } );
 
 // http://stackoverflow.com/a/10424014/229189
 
+// import objectAssign from 'object-assign'
 var objectAssign = Object.assign;
-
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
