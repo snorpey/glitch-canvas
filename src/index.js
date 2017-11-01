@@ -7,6 +7,7 @@ import base64URLToPNGStream from './output/node/toPNGStream';
 import base64URLToJPGStream from './output/node/toJPGStream';
 import imageDataToBase64 from './glitch/node/imageDataToBase64';
 import glitchImageData from './glitch/glitchImageData';
+import objectAssign from './util/object-assign.js';
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
@@ -41,20 +42,20 @@ export default function ( params ) {
 	}
 
 	function getInput () {
-		const result = Object.assign( { }, api );
+		const result = objectAssign( { }, api );
 
 		if ( ! inputFn ) {
-			Object.assign( result, inputMethods );
+			objectAssign( result, inputMethods );
 		}
 
 		return result;
 	}
 
 	function getOutput () {
-		const result = Object.assign( { }, api );
+		const result = objectAssign( { }, api );
 
 		if ( ! outputFn ) {
-			Object.assign( result, outputMethods );
+			objectAssign( result, outputMethods );
 		}
 
 		return result;

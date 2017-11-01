@@ -93,6 +93,9 @@ class Canvas$1 {
 
 Canvas$1.Image = Image;
 
+// import Canvas from 'canvas';
+// import Canvas from './browser.js';
+
 var imageToImageData = function ( image ) {
 	if ( image instanceof HTMLImageElement ) {
 		// http://stackoverflow.com/a/3016076/229189
@@ -220,8 +223,8 @@ base64Map.forEach( ( val, key ) => {  } );
 
 // http://stackoverflow.com/a/10424014/229189
 
-var objectAssign = Object.assign;
-
+// import objectAssign from 'object-assign'
+const objectAssign = Object.assign;
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
