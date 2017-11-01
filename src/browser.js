@@ -4,10 +4,9 @@ import base64URLToImage from './output/browser/toImage';
 import base64URLToImageData from './output/toImageData';
 import imageDataToBase64 from './glitch/browser/imageDataToBase64';
 import glitchImageData from './glitch/glitchImageData';
+import objectAssign from './util/object-assign.js';
 
 // PROMISE_POLYFILL_HERE
-var objectAssign = Object.assign;
-
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:

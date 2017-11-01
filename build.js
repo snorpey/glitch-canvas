@@ -1,5 +1,5 @@
 var fs = require( 'fs' );
-var rollup = require( 'rollup' );
+var { rollup } = require( 'rollup' );
 var buble = require( 'rollup-plugin-buble' );
 var UglifyJS = require( 'uglify-js' );
 var UglifyES = require( 'uglify-es' );
@@ -39,7 +39,7 @@ var mainFilePath = isBrowser ? 'browser.js' : 'index.js';
 
 var stringsToReplace = {
 	browser: {
-		"import Canvas from 'canvas'": "import Canvas from './browser.js'",
+		"const Canvas = require( 'canvas' );": "import Canvas from './browser.js'",
 		"// PROMISE_POLYFILL_HERE": ''
 	},
 	node: {
@@ -48,7 +48,7 @@ var stringsToReplace = {
 };
 
 if ( polyfill ) {
-	stringsToReplace.browser[ 'var objectAssign = Object.assign' ] = "import objectAssign from 'object-assign'";
+	stringsToReplace.browser[ 'const objectAssign = Object.assign' ] = "import objectAssign from 'object-assign'";
 
 	var promisePolyfillStr = `
 	import p from 'es6-promise';
@@ -78,49 +78,32 @@ function createES6Bundle ( filePath ) {
 }
 
 function processES6File ( filePath, format = 'es', moduleName ) {
-	const rollupOptions = {
-		input: filePath,
-		plugins: [
-			replace( stringsToReplace[env] || { } ),
-			nodeResolve(),
-			commonjs()
-		]
-	};
+	const rollupPlugins = [ ];
 
-	if ( es5Build ) {
-		rollupOptions.plugins.push( buble() );
+	if ( stringsToReplace[env] && Object.keys( stringsToReplace[env] ).length ) {
+		const replaceOptions = {
+			values: stringsToReplace[env],
+			delimiters: [ '', '' ]
+		};
+
+		rollupPlugins.push( replace( replaceOptions ) );
 	}
 
-	return rollup.rollup( rollupOptions )
-		.then( bundle => {
-			const bundleOpts = { format };
-
-			if ( moduleName ) {
-				bundleOpts.name = moduleName;
-			}
-
-			return bundle.generate( bundleOpts )
-				.then( bundleData => {
-					return bundleData.code;
-				} );
-		} );
-}
-
-function processWorkerFile ( filePath, format = 'es' ) {
-	const rollupOptions = {
-		input: filePath,
-		plugins: [
-			replace( stringsToReplace[env] || { } ),
-			nodeResolve(),
-			commonjs()
-		]
-	};
-
+	rollupPlugins.push(
+		nodeResolve(),
+		commonjs()
+	);
+	
 	if ( es5Build ) {
-		rollupOptions.plugins.push( buble() );
+		rollupPlugins.push( buble() );
 	}
 
-	return rollup.rollup( rollupOptions )
+	const rollupOptions = {
+		input: filePath,
+		plugins: rollupPlugins
+	};
+
+	return rollup( rollupOptions )
 		.then( bundle => {
 			const bundleOpts = { format };
 
@@ -210,8 +193,8 @@ function workersToBlobURL ( fileContent ) {
 	return Promise.all( workerPaths.map( ( workerPath ) => {
 		const p = workerPath.indexOf( globalPath ) === 0 ? workerPath : globalPath + workerPath;
 		
-		// return processES6File( p );
-		return processWorkerFile( p );
+		return processES6File( p );
+		// return processWorkerFile( p );
 	} ) )
 	.then( ( workerContents ) => {
 		return workerContents.map( ( workerContent, index ) => {
@@ -235,7 +218,7 @@ function workersToWorkerFunction ( fileContent ) {
 	return Promise.all( workerPaths.map( ( workerPath ) => {
 		const p = workerPath.indexOf( globalPath ) === 0 ? workerPath : globalPath + workerPath;
 		
-		return processWorkerFile( p );
+		return processES6File( p );
 	} ) )
 	.then( ( workerContents ) => {
 		return workerContents.map( ( workerContent, index ) => {
