@@ -240,7 +240,6 @@ object-assign
 @license MIT
 */
 
-'use strict';
 /* eslint-disable no-unused-vars */
 var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -352,9 +351,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
 
 (function (global, factory) {
     module.exports = factory();
-}(commonjsGlobal, (function () { 'use strict';
-
-function objectOrFunction(x) {
+}(commonjsGlobal, (function () { function objectOrFunction(x) {
   return typeof x === 'function' || typeof x === 'object' && x !== null;
 }
 
