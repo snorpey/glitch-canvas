@@ -6,11 +6,11 @@
 
 stream = stream && stream.hasOwnProperty('default') ? stream['default'] : stream;
 
-var clamp = function ( value, min, max ) {
+function clamp ( value, min, max ) {
 	return value < min ? min : value > max ? max : value;
-};
+}
 
-var clone = function ( obj ) {
+function clone ( obj ) {
 	var result = false;
 	
 	if ( typeof obj !== 'undefined' ) {
@@ -20,7 +20,7 @@ var clone = function ( obj ) {
 	}
 	
 	return result;
-};
+}
 
 var defaultParams = {
     amount:     35,
@@ -29,7 +29,7 @@ var defaultParams = {
 	seed:       25
 };
 
-var sanitizeInput = function ( params ) {
+function sanitizeInput ( params ) {
 	
 	params = clone( params );
 
@@ -60,7 +60,7 @@ var sanitizeInput = function ( params ) {
 	params.iterations = Math.round( params.iterations );
 
 	return params;
-};
+}
 
 // var Canvas = require( 'canvas' );;
 // import Canvas from './browser.js';
@@ -69,7 +69,7 @@ var Canvas = require( 'canvas' );
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
 var Image = Canvas.Image;
 
-var fromBufferToImageData = function ( buffer ) {
+function fromBufferToImageData ( buffer ) {
 	if ( buffer instanceof Buffer ) {
 		var image = new Image;
 		image.src = buffer;
@@ -84,13 +84,13 @@ var fromBufferToImageData = function ( buffer ) {
 		throw new Error( "Can't work with the buffer object provided." );
 		return;
 	}
-};
+}
 
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
 var Readable = stream.Readable;
 var Image$1 = Canvas.Image;
 
-var fromStreamToImageData = function ( stream$$1, resolve, reject ) {
+function fromStreamToImageData ( stream$$1, resolve, reject ) {
 	if ( stream$$1 instanceof Readable ) {
 		var bufferContent = [ ];
 				
@@ -118,11 +118,11 @@ var fromStreamToImageData = function ( stream$$1, resolve, reject ) {
 	} else {
 		reject( new Error( "Can't work with the buffer object provided." ) );
 	}
-};
+}
 
 var Image$2 = Canvas.Image;
 
-var loadBase64Image = function ( base64URL ) {
+function loadBase64Image ( base64URL ) {
 	return new Promise( function ( resolve, reject ) {
 		var image = new Image$2();
 		
@@ -136,16 +136,16 @@ var loadBase64Image = function ( base64URL ) {
 		
 		image.src = base64URL;
 	} );
-};
+}
 
-var getImageSize = function ( image ) {
+function getImageSize ( image ) {
 	return {
 		width: image.width || image.naturalWidth,
 		height: image.height || image.naturalHeight
 	};
-};
+}
 
-var canvasFromImage = function ( image ) {
+function canvasFromImage ( image ) {
 	var size = getImageSize( image );
 	var canvas = new Canvas( size.width, size.height );
 	var ctx = canvas.getContext( '2d' );
@@ -156,17 +156,17 @@ var canvasFromImage = function ( image ) {
 		canvas: canvas,
 		ctx: ctx
 	};
-};
+}
 
-var base64URLToBuffer = function ( base64URL, options, resolve, reject ) {
+function base64URLToBuffer ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
 		.then( function (image) {
 			var buffer = canvasFromImage( image ).canvas.toBuffer();
 			resolve( buffer );
 		}, reject );
-};
+}
 
-var base64URLToImageData = function ( base64URL, options, resolve, reject ) {
+function base64URLToImageData ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
 		.then( function (image) {
 			var size = getImageSize( image );
@@ -184,10 +184,10 @@ var base64URLToImageData = function ( base64URL, options, resolve, reject ) {
 
 			resolve( imageData );
 		}, reject );
-};
+}
 
 // https://github.com/Automattic/node-canvas#canvaspngstream
-var base64URLToPNGStream = function ( base64URL, options, resolve, reject ) {
+function base64URLToPNGStream ( base64URL, options, resolve, reject ) {
 	loadBase64Image( base64URL )
 		.then( function (image) {
 			var stream$$1 = canvasFromImage( image ).canvas.pngStream();
@@ -195,10 +195,10 @@ var base64URLToPNGStream = function ( base64URL, options, resolve, reject ) {
 		}, function ( err ) {
 			reject( err );
 		} );
-};
+}
 
 // https://github.com/Automattic/node-canvas#canvasjpegstream-and-canvassyncjpegstream
-var base64URLToJPGStream = function ( base64URL, options, resolve, reject ) {
+function base64URLToJPGStream ( base64URL, options, resolve, reject ) {
 	options = options || { };
 
 	var streamParams = {
@@ -212,9 +212,9 @@ var base64URLToJPGStream = function ( base64URL, options, resolve, reject ) {
 			var stream$$1 = canvasFromImage( image ).canvas.jpegStream( streamParams );
 			resolve( stream$$1 );
 		}, reject );
-};
+}
 
-var isImageData = function ( imageData ) {
+function isImageData ( imageData ) {
 	return (
 		imageData && 
 		typeof imageData.width === 'number' &&
@@ -223,9 +223,9 @@ var isImageData = function ( imageData ) {
 		typeof imageData.data.length === 'number' &&
 		typeof imageData.data === 'object'
 	);
-};
+}
 
-var imageDataToBase64 = function ( imageData, quality ) {
+function imageDataToBase64 ( imageData, quality ) {
 	return new Promise ( function ( resolve, reject ) {
 		if ( isImageData( imageData ) ) {
 			var canvas = new Canvas( imageData.width, imageData.height );
@@ -255,7 +255,7 @@ var imageDataToBase64 = function ( imageData, quality ) {
 			reject( new Error( 'object is not valid imageData' ) );
 		}
 	} );
-};
+}
 
 var base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 var base64Map = base64Chars.split( '' );
@@ -272,7 +272,7 @@ var reversedBase64Map = maps.reversedBase64Map;
 
 // https://github.com/mutaphysis/smackmyglitchupjs/blob/master/glitch.html
 // base64 is 2^6, byte is 2^8, every 4 base64 values create three bytes
-var base64ToByteArray = function ( base64URL ) {	
+function base64ToByteArray ( base64URL ) {	
 	var result = [ ];
 	var prev;
 
@@ -299,11 +299,11 @@ var base64ToByteArray = function ( base64URL ) {
 	}
 
 	return result;
-};
+}
 
 // http://stackoverflow.com/a/10424014/229189
 
-var jpgHeaderLength = function ( byteArr ) {
+function jpgHeaderLength ( byteArr ) {
 	var result = 417;
 
 	for ( var i = 0, len = byteArr.length; i < len; i++ ) {
@@ -314,9 +314,9 @@ var jpgHeaderLength = function ( byteArr ) {
 	}
 
 	return result;
-};
+}
 
-var glitchByteArray = function ( byteArray, seed, amount, iterationCount ) {
+function glitchByteArray ( byteArray, seed, amount, iterationCount ) {
 	var headerLength = jpgHeaderLength( byteArray );
 	var maxIndex = byteArray.length - headerLength - 4;
 
@@ -340,11 +340,11 @@ var glitchByteArray = function ( byteArray, seed, amount, iterationCount ) {
 	}
 
 	return byteArray;
-};
+}
 
 var base64Map$1 = maps.base64Map;
 
-var byteArrayToBase64 = function ( byteArray ) {
+function byteArrayToBase64 ( byteArray ) {
 	var result = [ 'data:image/jpeg;base64,' ];
 	var byteNum;
 	var previousByte;
@@ -380,9 +380,9 @@ var byteArrayToBase64 = function ( byteArray ) {
 	}
 
 	return result.join( '' );
-};
+}
 
-var glitchImageData = function ( imageData, base64URL, params ) {
+function glitchImageData ( imageData, base64URL, params ) {
 	if ( isImageData( imageData ) ) {
 		var byteArray = base64ToByteArray( base64URL );
 		var glitchedByteArray = glitchByteArray( byteArray, params.seed, params.amount, params.iterations );
@@ -392,7 +392,7 @@ var glitchImageData = function ( imageData, base64URL, params ) {
 		throw new Error( 'glitchImageData: imageData seems to be corrupt.' );
 		return;
 	}
-};
+}
 
 // import objectAssign from 'object-assign'
 var objectAssign = Object.assign;
@@ -407,7 +407,7 @@ var objectAssign = Object.assign;
 // etc...
 // 
 
-var index = function ( params ) {
+function index ( params ) {
 	params = sanitizeInput( params );
 
 	var inputFn;
@@ -542,7 +542,7 @@ var index = function ( params ) {
 	}
 
 	return getInput();
-};
+}
 
 return index;
 
