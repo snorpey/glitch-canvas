@@ -48,7 +48,7 @@
     "mocha-phantomjs-core": "^2.1.1",
     "phantomjs": "^2.1.7",
     "object-assign": "^4.1.1",
-    "rollup": "^0.51.8",
+    "rollup": "^0.52.0",
     "rollup-plugin-buble": "^0.18.0",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
