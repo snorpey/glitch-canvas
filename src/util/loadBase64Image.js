@@ -1,6 +1,7 @@
-import Canvas from './canvas.js';
+import { Image } from './canvas.js';
+// import Canvas from './canvas.js';
 
-const Image = Canvas.Image;
+// const Image = Canvas.Image;
 
 export default function ( base64URL ) {
 	return new Promise( ( resolve, reject ) => {

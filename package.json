@@ -10,15 +10,22 @@
     "test": "test"
   },
   "scripts": {
-    "build": "npm run build-node && npm run build-browsers",
+    "___build": "npm run build-node && npm run build-browsers",
+    "___build-node": "node build.js",
+    "___build-browsers": "node build.js -b && node build.js -bp && node build.js -bm && node build.js -bmp && node build.js -be && node build.js -bem && node build.js -beu && node build.js -bemu",
+    "___prepublish": "npm run build && npm run test",
+
+    "build": "npm run build-node",
     "build-node": "node build.js",
-    "build-browsers": "node build.js -b && node build.js -bp && node build.js -bm && node build.js -bmp && node build.js -be && node build.js -bem && node build.js -beu && node build.js -bemu",
-    "prepublish": "npm run build && npm run test",
-    "test": "npm run test-node && npm run test-browsers",
+
+    "___test": "npm run test-node && npm run test-browsers",
+    "___test-node": "mocha ./test/test-node.js",
+    "___test-browsers": "npm run test-browser && npm run test-browser-min",
+    "___test-browser": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.html",
+    "___test-browser-min": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.min.html",
+
+    "test": "npm run test-node",
     "test-node": "mocha ./test/test-node.js",
-    "test-browsers": "npm run test-browser && npm run test-browser-min",
-    "test-browser": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.html",
-    "test-browser-min": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.min.html"
   },
   "repository": {
     "type": "git",
@@ -38,7 +45,7 @@
   },
   "homepage": "https://github.com/snorpey/glitch-canvas#readme",
   "dependencies": {
-    "canvas": "^1.6.7"
+    "canvas": "^2.0.0-alpha.11"
   },
   "devDependencies": {
     "commander": "^2.9.0",

@@ -1,4 +1,5 @@
-import Canvas from './util/canvas.js';
+// import Canvas from './util/canvas.js';
+import { createCanvas } from './util/canvas.js';
 import isImageData from '../util/isImageData';
 
 export default function ( imageData ) {
@@ -47,7 +48,8 @@ export default function ( imageData ) {
 
 // http://stackoverflow.com/a/11918126/229189
 function copyImageDataWithCanvas ( imageData ) {
-	const canvas = Canvas( imageData.width, imageData.height );
+	// const canvas = new Canvas( imageData.width, imageData.height );
+	const canvas = createCanvas( imageData.width, imageData.height );
 	const ctx = canvas.getContext( '2d' );
 	ctx.putImageData( imageData, 0, 0 );
 				

@@ -1,6 +1,7 @@
-import Canvas from '../../util/canvas.js';
+// import Canvas from '../../util/canvas.js';
+import { createCanvas } from '../../util/canvas.js';
 
-const Image = Canvas.Image;
+// const Image = Canvas.Image;
 
 export default function ( image ) {
 	if ( image instanceof HTMLImageElement ) {
@@ -9,7 +10,8 @@ export default function ( image ) {
 			throw new Error( "This this image hasn't finished loading: " + image.src );
 		}
 
-		const canvas = new Canvas( image.naturalWidth, image.naturalHeight );
+		// const canvas = new Canvas( image.naturalWidth, image.naturalHeight );
+		const canvas = createCanvas( image.naturalWidth, image.naturalHeight );
 		const ctx = canvas.getContext( '2d' );
 		
 		ctx.drawImage( image, 0, 0, canvas.width, canvas.height );

@@ -64,17 +64,41 @@ function sanitizeInput ( params ) {
 
 // var Canvas = require( 'canvas' );;
 // import Canvas from './browser.js';
-var Canvas = require( 'canvas' );
+
+// const Canvas = require( 'canvas' );
+// export default Canvas;
+
+// import { createCanvas as createCNVS, Image as IMG } from 'canvas';
+// export { createCNVS as createCanvas, IMG as Image };
+
+var ref = require( 'canvas' );
+var createCanvas = ref.createCanvas;
+var Image = ref.Image;
+
+var createCanvas = createCanvas;
+var Image = Image;
+
+// export function createCanvas ( w, h ) {
+// 	console.log( w, h );
+// }
+
+// export class Image {
+// 	constructor () {
+// 		console.log( 'IMG' );
+// 	}
+// }
 
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
-var Image = Canvas.Image;
+// import Canvas from '../../util/canvas.js';
+// const Image = Canvas.Image;
 
 function fromBufferToImageData ( buffer ) {
 	if ( buffer instanceof Buffer ) {
 		var image = new Image;
 		image.src = buffer;
 
-		var canvas = new Canvas( image.width, image.height );
+		// const canvas = new Canvas( image.width, image.height );
+		var canvas = createCanvas( image.width, image.height );
 		var ctx = canvas.getContext( '2d' );
 
 		ctx.drawImage( image, 0, 0, image.width, image.height );
@@ -87,24 +111,26 @@ function fromBufferToImageData ( buffer ) {
 }
 
 // https://github.com/Automattic/node-canvas#imagesrcbuffer
+// import Canvas from '../../util/canvas.js';
 var Readable = stream.Readable;
-var Image$1 = Canvas.Image;
+// const Image = Canvas.Image;
 
 function fromStreamToImageData ( stream$$1, resolve, reject ) {
 	if ( stream$$1 instanceof Readable ) {
 		var bufferContent = [ ];
 				
-		stream$$1.on( 'data', function( chunk ) {
+		stream$$1.on( 'data', function (chunk) {
 			bufferContent.push( chunk );
 		} );
 		
-		stream$$1.on( 'end', function() {
+		stream$$1.on( 'end', function () {
 			try {
 				var buffer = Buffer.concat( bufferContent );
-				var image = new Image$1;
+				var image = new Image;
 				image.src = buffer;
 
-				var canvas = new Canvas( image.width, image.height );
+				// const canvas = new Canvas( image.width, image.height );
+				var canvas = createCanvas( image.width, image.height );
 				var ctx = canvas.getContext( '2d' );
 
 				ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
@@ -120,11 +146,13 @@ function fromStreamToImageData ( stream$$1, resolve, reject ) {
 	}
 }
 
-var Image$2 = Canvas.Image;
+// import Canvas from './canvas.js';
+
+// const Image = Canvas.Image;
 
 function loadBase64Image ( base64URL ) {
 	return new Promise( function ( resolve, reject ) {
-		var image = new Image$2();
+		var image = new Image();
 		
 		image.onload = function () {
 			resolve( image );
@@ -145,9 +173,11 @@ function getImageSize ( image ) {
 	};
 }
 
+// import Canvas from './canvas.js';
 function canvasFromImage ( image ) {
 	var size = getImageSize( image );
-	var canvas = new Canvas( size.width, size.height );
+	// const canvas = new Canvas( size.width, size.height );
+	var canvas = createCanvas( size.width, size.height );
 	var ctx = canvas.getContext( '2d' );
 	
 	ctx.drawImage( image, 0, 0, size.width, size.height );
@@ -225,10 +255,12 @@ function isImageData ( imageData ) {
 	);
 }
 
+// import Canvas from '../../util/canvas.js';
 function imageDataToBase64 ( imageData, quality ) {
 	return new Promise ( function ( resolve, reject ) {
 		if ( isImageData( imageData ) ) {
-			var canvas = new Canvas( imageData.width, imageData.height );
+			// const canvas = new Canvas( imageData.width, imageData.height );
+			var canvas = createCanvas( imageData.width, imageData.height );
 			var ctx = canvas.getContext( '2d' );
 			ctx.putImageData( imageData, 0, 0 );
 
