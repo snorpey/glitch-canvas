@@ -25,7 +25,7 @@
     "___test-browser-min": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.min.html",
 
     "test": "npm run test-node",
-    "test-node": "mocha ./test/test-node.js",
+    "test-node": "mocha ./test/test-node.js"
   },
   "repository": {
     "type": "git",
