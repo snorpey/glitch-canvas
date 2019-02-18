@@ -44,7 +44,7 @@
     "commander": "^2.9.0",
     "es6-promise": "^4.1.0",
     "expect.js": "^0.3.1",
-    "mocha": "^5.0.0",
+    "mocha": "^6.0.0",
     "mocha-phantomjs-core": "^2.1.1",
     "phantomjs": "^2.1.7",
     "object-assign": "^4.1.1",
