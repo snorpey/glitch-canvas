@@ -6,7 +6,7 @@ export default function ( byteArray ) {
 	let byteNum;
 	let previousByte;
 
-	for ( var i = 0, len = byteArray.length; i < len; i++ ) {
+	for ( let i = 0, len = byteArray.length; i < len; i++ ) {
 		const currentByte = byteArray[i];
 		byteNum = i % 3;
 

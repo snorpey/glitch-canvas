@@ -3,7 +3,10 @@
 export default function ( byteArr ) {
 	let result = 417;
 
-	for ( var i = 0, len = byteArr.length; i < len; i++ ) {
+	// https://en.wikipedia.org/wiki/JPEG#Syntax_and_structure
+	// looks for the first occurence of 0xFF, 0xDA in the byteArray
+	// which is the start of scan
+	for ( let i = 0, len = byteArr.length; i < len; i++ ) {
 		if ( byteArr[i] === 0xFF && byteArr[i + 1] === 0xDA ) {
 			result = i + 2;
 			break;

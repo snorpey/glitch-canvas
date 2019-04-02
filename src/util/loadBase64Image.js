@@ -1,7 +1,6 @@
-import { Image } from './canvas.js';
-// import Canvas from './canvas.js';
+import Canvas from './canvas.js';
 
-// const Image = Canvas.Image;
+const Image = Canvas.Image;
 
 export default function ( base64URL ) {
 	return new Promise( ( resolve, reject ) => {
@@ -11,10 +10,12 @@ export default function ( base64URL ) {
 			resolve( image );
 		};
 
-		image.onerror = err => {
-			reject( err );
-		};
+		image.onerror = reject;
 		
-		image.src = base64URL;
+		try {
+			image.src = base64URL;
+		} catch ( err ) {
+			reject( err );
+		}
 	} );
 }

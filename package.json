@@ -10,22 +10,18 @@
     "test": "test"
   },
   "scripts": {
-    "___build": "npm run build-node && npm run build-browsers",
-    "___build-node": "node build.js",
-    "___build-browsers": "node build.js -b && node build.js -bp && node build.js -bm && node build.js -bmp && node build.js -be && node build.js -bem && node build.js -beu && node build.js -bemu",
-    "___prepublish": "npm run build && npm run test",
-
-    "build": "npm run build-node",
+    "build": "npm run build-node && npm run build-browsers",
     "build-node": "node build.js",
-
-    "___test": "npm run test-node && npm run test-browsers",
-    "___test-node": "mocha ./test/test-node.js",
-    "___test-browsers": "npm run test-browser && npm run test-browser-min",
-    "___test-browser": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.html",
-    "___test-browser-min": "phantomjs node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/test-browser.min.html",
-
-    "test": "npm run test-node",
-    "test-node": "mocha ./test/test-node.js"
+    "build-browsers": "node build.js -b && node build.js -bp && node build.js -bm && node build.js -bmp && node build.js -be && node build.js -bem && node build.js -beu && node build.js -bemu",
+    "test": "npm run test-node && npm run test-browsers",
+    "test-node": "mocha ./test/test-node.js",
+    "test-browsers": "npm run test-browser-min && npm run test-browser-polyfills && npm run test-browser-polyfills-min && npm run test-browser-polyfills-es6-umd && npm run test-browser-polyfills-es6-umd-min",
+    "test-browser": "karma start --single-run --browsers ChromeHeadless test/browser.karma.conf.js --lib=glitch-canvas-browser.js",
+    "test-browser-min": "karma start --single-run --browsers ChromeHeadless test/browser.karma.conf.js --lib=glitch-canvas-browser.min.js",
+    "test-browser-polyfills": "karma start --single-run --browsers ChromeHeadless test/browser.karma.conf.js --lib=glitch-canvas-browser-with-polyfills.js",
+    "test-browser-polyfills-min": "karma start --single-run --browsers ChromeHeadless test/browser.karma.conf.js --lib=glitch-canvas-browser-with-polyfills.min.js",
+    "test-browser-polyfills-es6-umd": "karma start --single-run --browsers ChromeHeadless test/browser.karma.conf.js --lib=glitch-canvas-browser.es6.umd.js",
+    "test-browser-polyfills-es6-umd-min": "karma start --single-run --browsers ChromeHeadless test/browser.karma.conf.js --lib=glitch-canvas-browser.es6.umd.min.js"
   },
   "repository": {
     "type": "git",
@@ -45,21 +41,24 @@
   },
   "homepage": "https://github.com/snorpey/glitch-canvas#readme",
   "dependencies": {
-    "canvas": "^2.0.0-alpha.11"
+    "canvas": "^2.0.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "commander": "^2.9.0",
     "es6-promise": "^4.1.0",
     "expect.js": "^0.3.1",
-    "mocha": "^5.0.0",
-    "mocha-phantomjs-core": "^2.1.1",
-    "phantomjs": "^2.1.7",
+    "karma": "^4.0.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "mocha": "^5.2.0",
     "object-assign": "^4.1.1",
-    "rollup": "^0.52.0",
-    "rollup-plugin-buble": "^0.18.0",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-replace": "^2.0.0",
+    "rollup": "^v1.8.0",
+    "rollup-plugin-buble": "^0.19.0",
+    "rollup-plugin-commonjs": "^9.0.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-replace": "^2.1.1",
     "uglify-es": "^3.1.6",
     "uglify-js": "^3.1.6"
   }

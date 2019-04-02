@@ -1,12 +1,10 @@
-// import Canvas from '../../util/canvas.js';
-import { createCanvas } from '../../util/canvas.js';
+import Canvas from '../../util/canvas.js';
 import isImageData from '../../util/isImageData';
 
 export default function ( imageData, quality ) {
 	return new Promise ( ( resolve, reject ) => {
 		if ( isImageData( imageData ) ) {
-			// const canvas = new Canvas( imageData.width, imageData.height );
-			const canvas = createCanvas( imageData.width, imageData.height );
+			const canvas = new Canvas( imageData.width, imageData.height );
 			const ctx = canvas.getContext( '2d' );
 			ctx.putImageData( imageData, 0, 0 );
 

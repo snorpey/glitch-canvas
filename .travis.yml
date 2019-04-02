@@ -1,24 +1,19 @@
 language: node_js
 node_js:
-  - "7.10"
-
-matrix:
-  allow_failures:
-    - node_js: "5"
+  - "7"
+  - "10"
+dist: trusty # needs Ubuntu Trusty
+sudo: false  # no need for virtualization.
 addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - libcairo2-dev
-      - libjpeg8-dev
-      - libpango1.0-dev
-      - libgif-dev
-      - g++-4.9
-env:
-  - CXX=g++-4.9
-before_install:
-  - $CXX --version
-  - npm explore npm -g -- npm install node-gyp@latest
-  - npm install -g phantomjs
-sudo: false
+  chrome: stable # have Travis install chrome stable.
+before_script: # https://github.com/travis-ci/travis-ci/issues/9024#issuecomment-356282802
+    - "sudo chown root /opt/google/chrome/chrome-sandbox"
+    - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
+cache:
+  npm: true
+  directories:
+    - node_modules
+install:
+  - npm install
+script:
+  - npm test
