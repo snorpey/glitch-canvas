@@ -47,7 +47,7 @@ export default function ( imageData ) {
 
 // http://stackoverflow.com/a/11918126/229189
 function copyImageDataWithCanvas ( imageData ) {
-	const canvas = Canvas( imageData.width, imageData.height );
+	const canvas = new Canvas( imageData.width, imageData.height );
 	const ctx = canvas.getContext( '2d' );
 	ctx.putImageData( imageData, 0, 0 );
 				

@@ -2,10 +2,10 @@
 var fs = require('fs');
 var assert = require('assert');
 var stream = require('stream');
-var Canvas = require('canvas');
+var { createCanvas, Image, PNGStream, JPEGStream } = require('canvas');
 var expect = require('expect.js');
 
-var Image = Canvas.Image;
+// var Image = Canvas.Image;
 
 var glitch = require('../dist/glitch-canvas-node.js');
 
@@ -311,7 +311,7 @@ describe( 'node tests for glitch-canvas', function () {
 						.fromBuffer( buffer )
 						.toJPGStream()
 						.then( function ( jpgStream ) {
-							expect( jpgStream instanceof Canvas.JPEGStream ).to.be( true );
+							expect( jpgStream instanceof JPEGStream ).to.be( true );
 							done();
 						}, done );
 				} );
@@ -351,7 +351,7 @@ describe( 'node tests for glitch-canvas', function () {
 						.fromBuffer( buffer )
 						.toPNGStream()
 						.then( function ( pngStream ) {
-							expect( pngStream instanceof Canvas.PNGStream ).to.be( true );
+							expect( pngStream instanceof PNGStream ).to.be( true );
 							done();
 						}, done );
 				} );
@@ -395,7 +395,7 @@ function bufferToImageData ( buffer ) {
 	var img = new Image();
 	img.src = buffer;
 
-	var canvas = new Canvas( img.width, img.height );
+	var canvas = createCanvas( img.width, img.height );
 	var ctx = canvas.getContext( '2d' );
 	ctx.drawImage( img, 0, 0 );
 

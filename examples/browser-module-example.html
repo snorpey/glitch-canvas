@@ -15,38 +15,65 @@
 		<div id="img-container"></div>
 		<h1>toImageData</h1>
 		<div id="canvas-container"></div>
-		<script src="https://unpkg.com/systemjs"></script>
-		<script>
+
+		<h1>toImage</h1>
+		<div id="imgel-container"></div>
 		
-		// setting up systemjs. this allows us to load es6 modules
-		SystemJS.config( {
-			map: {
-				'plugin-traceur': 'https://unpkg.com/systemjs-plugin-traceur',
-				'traceur': 'https://unpkg.com/traceur/bin/traceur.js',
-				'traceur-runtime': 'https://unpkg.com/traceur/bin/traceur-runtime.js'
-			},
-			meta: {
-				'traceur': {
-					format: 'global',
-					exports: 'traceur'
-				},
-				'traceur-runtime': {
-					format: 'global',
-					exports: '$traceurRuntime'
-				}
-			},
-			transpiler: 'plugin-traceur',
-			transpilerRuntime: false,
-			baseURL: '.'
+		<script type="module">
+import glitch from '../dist/glitch-canvas-browser.es6.js';
+			
+const imagePath = 'img/lincoln.jpg';
+const imgContainerEl = document.getElementById( 'img-container' );
+const imgElContainerEl = document.getElementById( 'imgel-container' );
+const canvasContainerEl = document.getElementById( 'canvas-container' );
+
+const params = {
+	amount:     35,
+	iterations: 20,
+	quality:    30,
+	seed:       25
+};
+
+loadImage( imagePath, function ( img ) {
+	glitch( params )
+		.fromImage( img )
+		.toDataURL()
+		.then( function( dataURL ) {
+			const imageEl = new Image();
+			imageEl.src = dataURL;
+			imgContainerEl.appendChild( imageEl );
 		} );
 
-		// check out this file to see how to consume glitch-canvas as an es6 module
-		// (requires browsers that support ES6, even in web workers)
-		SystemJS.import( './browser-module-example.js' );
-		</script>
+	glitch( params )
+		.fromImage( img )
+		.toImageData()
+		.then( function( imageData ) {
+			const canvasEl = document.createElement( 'canvas' );
+			canvasEl.width = imageData.width;
+			canvasEl.height = imageData.height;
+			canvasEl.style.width = imageData.width + 'px';
+			const ctx = canvasEl.getContext( '2d' );
+			canvasContainerEl.appendChild( canvasEl );
+			ctx.putImageData( imageData, 0, 0 );
+		} );
 
-		<script>
-			
+	glitch( params )
+		.fromImage( img )
+		.toImage()
+		.then( function( imgEl ) {
+			imgElContainerEl.appendChild( imgEl );
+		} );
+} );
+
+function loadImage ( src, callback ) {
+	const imageEl = new Image();
+
+	imageEl.onload = function () {
+		callback( imageEl );
+	};
+
+	imageEl.src = src;
+}
 		</script>
 	</body>
 </html>

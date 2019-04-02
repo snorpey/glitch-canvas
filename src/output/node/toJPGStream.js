@@ -10,10 +10,11 @@ export default function ( base64URL, options, resolve, reject ) {
 		quality: options.quality || 75,
 		progressive: options.progressive || false
 	};
-
+	
 	loadBase64Image( base64URL )
 		.then( image => {
-			const stream = canvasFromImage( image ).canvas.jpegStream( streamParams );
+			const c = canvasFromImage( image );
+			const stream = c.canvas.jpegStream( streamParams );
 			resolve( stream );
 		}, reject );
 }

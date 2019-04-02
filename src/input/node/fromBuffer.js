@@ -12,7 +12,7 @@ export default function ( buffer ) {
 		const ctx = canvas.getContext( '2d' );
 
 		ctx.drawImage( image, 0, 0, image.width, image.height );
-
+		
 		return ctx.getImageData( 0, 0, canvas.width, canvas.height );
 	} else {
 		throw new Error( "Can't work with the buffer object provided." );

@@ -10,10 +10,12 @@ export default function ( base64URL ) {
 			resolve( image );
 		};
 
-		image.onerror = err => {
-			reject( err );
-		};
+		image.onerror = reject;
 		
-		image.src = base64URL;
+		try {
+			image.src = base64URL;
+		} catch ( err ) {
+			reject( err );
+		}
 	} );
 }

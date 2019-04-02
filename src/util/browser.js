@@ -1,9 +1,14 @@
 class Canvas {
-	constructor ( width = 300, height = 150 ) {	
-		this.canvasEl = document.createElement( 'canvas' );
-		this.canvasEl.width = width;
-		this.canvasEl.height = height;
-		this.ctx = this.canvasEl.getContext( '2d' );
+	constructor ( width = 300, height = 150 ) {
+		if ( typeof window === 'undefined' ) {
+			this.canvasEl = { width, height };
+			this.ctx = null;
+		} else {
+			this.canvasEl = document.createElement( 'canvas' );
+			this.canvasEl.width = width;
+			this.canvasEl.height = height;
+			this.ctx = this.canvasEl.getContext( '2d' );
+		} 
 	}
 
 	getContext () {
@@ -35,6 +40,8 @@ class Canvas {
 	}
 }
 
-Canvas.Image = Image;
+if ( typeof window !== 'undefined' ) {
+	Canvas.Image = Image;
+}
 
 export default Canvas;

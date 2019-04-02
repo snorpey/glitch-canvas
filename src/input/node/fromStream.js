@@ -9,11 +9,11 @@ export default function ( stream, resolve, reject ) {
 	if ( stream instanceof Readable ) {
 		const bufferContent = [ ];
 				
-		stream.on( 'data', function( chunk ) {
+		stream.on( 'data', chunk => {
 			bufferContent.push( chunk );
 		} );
 		
-		stream.on( 'end', function() {
+		stream.on( 'end', () => {
 			try {
 				const buffer = Buffer.concat( bufferContent );
 				const image = new Image;

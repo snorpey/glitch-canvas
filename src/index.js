@@ -143,7 +143,7 @@ export default function ( params ) {
 	function glitch ( imageData, params ) {
 		return new Promise( ( resolve, reject ) => {
 			imageDataToBase64( imageData, params.quality )
-				.then(  base64URL => {
+				.then( base64URL => {
 					try {
 						resolve( glitchImageData( imageData, base64URL, params ) );
 					} catch ( err ) {
