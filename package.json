@@ -55,7 +55,7 @@
     "mocha": "^5.2.0",
     "object-assign": "^4.1.1",
     "rollup": "^v1.8.0",
-    "rollup-plugin-buble": "^0.19.0",
+    "rollup-plugin-buble": "^0.19.8",
     "rollup-plugin-commonjs": "^9.0.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-replace": "^2.1.1",
