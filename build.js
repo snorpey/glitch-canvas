@@ -28,7 +28,7 @@ var bundleUMD = !! program.umd;
 var polyfill = !! program.polyfill;
 
 var globalPath = 'src/';
-var buildPath = 'dist/';
+var buildPaths = [ 'dist/' ];
 var minifyExtension = 'min';
 var es6Extension = 'es6';
 var umdExtension = 'umd';
@@ -36,6 +36,10 @@ var umdExtension = 'umd';
 var moduleName = 'glitch';
 var fileName = 'glitch-canvas-{APPENDIX}';
 var mainFilePath = isBrowser ? 'browser.js' : 'index.js';
+
+if ( isBrowser ) {
+	buildPaths.push( 'glitch-canvas-browser/' );
+}
 
 var stringsToReplace = {
 	browser: {
@@ -60,12 +64,14 @@ if ( polyfill ) {
 
 console.log( 'building with options: env:', env, 'es6:', ! es5Build, 'minify:', minifyBuild, 'umd', bundleUMD );
 
-createES6Bundle( globalPath + mainFilePath )
-	.then( fileContent => {
-		console.log( 'build complete. file saved to ' + buildPath + getOutputFileName( mainFilePath ) );
-	} );
+buildPaths.forEach( buildPath => {
+	createES6Bundle( globalPath + mainFilePath, buildPath )
+		.then( fileContent => {
+			console.log( 'build complete. file saved to ' + buildPath + getOutputFileName( mainFilePath ) );
+		} );
+} );
 
-function createES6Bundle ( filePath ) {
+function createES6Bundle ( filePath, buildPath ) {
 	const format = ( es5Build || bundleUMD ) ? 'umd' : 'es';
 
 	return processES6File( filePath, format, moduleName )
