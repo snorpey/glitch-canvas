@@ -1,6 +1,6 @@
 {
   "name": "glitch-canvas",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "JavaScript library for applying a glitch effect to a canvas element",
   "main": "dist/glitch-canvas-node.js",
   "browser": "dist/glitch-canvas-browser.js",
