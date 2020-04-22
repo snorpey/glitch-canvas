@@ -4,7 +4,7 @@
 	(global = global || self, global.glitch = factory(global.stream));
 }(this, (function (stream) { 'use strict';
 
-	stream = stream && stream.hasOwnProperty('default') ? stream['default'] : stream;
+	stream = stream && Object.prototype.hasOwnProperty.call(stream, 'default') ? stream['default'] : stream;
 
 	function clamp ( value, min, max ) {
 		return value < min ? min : value > max ? max : value;
