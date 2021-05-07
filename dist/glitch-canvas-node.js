@@ -1,10 +1,12 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('stream')) :
 	typeof define === 'function' && define.amd ? define(['stream'], factory) :
-	(global = global || self, global.glitch = factory(global.stream));
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.glitch = factory(global.stream));
 }(this, (function (stream) { 'use strict';
 
-	stream = stream && Object.prototype.hasOwnProperty.call(stream, 'default') ? stream['default'] : stream;
+	function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+	var stream__default = /*#__PURE__*/_interopDefaultLegacy(stream);
 
 	function clamp ( value, min, max ) {
 		return value < min ? min : value > max ? max : value;
@@ -64,7 +66,7 @@
 
 	var ref = require('canvas');
 	var createCanvas = ref.createCanvas;
-	var Image = ref.Image;
+	var Image$3 = ref.Image;
 
 	var Canvas = function Canvas ( width, height ) {
 		if ( width === void 0 ) width = 300;
@@ -124,17 +126,15 @@
 
 	Object.defineProperties( Canvas.prototype, prototypeAccessors );
 
-	Canvas.Image = Image;
-
-	// var Canvas = require( 'canvas' );;
+	Canvas.Image = Image$3;
 
 	// https://github.com/Automattic/node-canvas#imagesrcbuffer
 
-	var Image$1 = Canvas.Image;
+	var Image$2 = Canvas.Image;
 
 	function fromBufferToImageData ( buffer ) {
 		if ( buffer instanceof Buffer ) {
-			var image = new Image$1;
+			var image = new Image$2;
 			image.src = buffer;
 
 			var canvas = new Canvas( image.width, image.height );
@@ -148,8 +148,8 @@
 		}
 	}
 
-	var Readable = stream.Readable;
-	var Image$2 = Canvas.Image;
+	var Readable = stream__default['default'].Readable;
+	var Image$1 = Canvas.Image;
 
 	function fromStreamToImageData ( stream, resolve, reject ) {
 		if ( stream instanceof Readable ) {
@@ -162,7 +162,7 @@
 			stream.on( 'end', function () {
 				try {
 					var buffer = Buffer.concat( bufferContent );
-					var image = new Image$2;
+					var image = new Image$1;
 					image.src = buffer;
 
 					var canvas = new Canvas( image.width, image.height );
@@ -181,11 +181,11 @@
 		}
 	}
 
-	var Image$3 = Canvas.Image;
+	var Image = Canvas.Image;
 
 	function loadBase64Image ( base64URL ) {
 		return new Promise( function ( resolve, reject ) {
-			var image = new Image$3();
+			var image = new Image();
 			
 			image.onload = function () {
 				resolve( image );
@@ -321,17 +321,17 @@
 	}
 
 	var base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-	var base64Map = base64Chars.split( '' );
-	var reversedBase64Map = { };
+	var base64Map$1 = base64Chars.split( '' );
+	var reversedBase64Map$1 = { };
 
-	base64Map.forEach( function ( val, key ) { reversedBase64Map[val] = key; } );
+	base64Map$1.forEach( function ( val, key ) { reversedBase64Map$1[val] = key; } );
 
 	var maps = {
-		base64Map: base64Map,
-		reversedBase64Map: reversedBase64Map
+		base64Map: base64Map$1,
+		reversedBase64Map: reversedBase64Map$1
 	};
 
-	var reversedBase64Map$1 = maps.reversedBase64Map;
+	var reversedBase64Map = maps.reversedBase64Map;
 
 	// https://github.com/mutaphysis/smackmyglitchupjs/blob/master/glitch.html
 	// base64 is 2^6, byte is 2^8, every 4 base64 values create three bytes
@@ -342,8 +342,8 @@
 		var srcURL = base64URL.replace( 'data:image/jpeg;base64,', '' );
 
 		for ( var i = 0, len = srcURL.length; i < len; i++ ) {
-			var char = srcURL[ i ];
-			var currentChar = reversedBase64Map$1[ srcURL[ i ] ];
+			srcURL[ i ];
+			var currentChar = reversedBase64Map[ srcURL[ i ] ];
 			var digitNum = i % 4;
 
 			switch ( digitNum ) {
@@ -411,7 +411,7 @@
 		return byteArray;
 	}
 
-	var base64Map$1 = maps.base64Map;
+	var base64Map = maps.base64Map;
 
 	function byteArrayToBase64 ( byteArray ) {
 		var result = [ 'data:image/jpeg;base64,' ];
@@ -424,14 +424,14 @@
 
 			switch ( byteNum ) {
 				case 0: // first byte
-					result.push( base64Map$1[ currentByte >> 2 ] );
+					result.push( base64Map[ currentByte >> 2 ] );
 					break;
 				case 1: // second byte
-					result.push( base64Map$1[( previousByte & 3 ) << 4 | ( currentByte >> 4 )] );
+					result.push( base64Map[( previousByte & 3 ) << 4 | ( currentByte >> 4 )] );
 					break;
 				case 2: // third byte
-					result.push( base64Map$1[( previousByte & 0x0f ) << 2 | ( currentByte >> 6 )] );
-					result.push( base64Map$1[currentByte & 0x3f] );
+					result.push( base64Map[( previousByte & 0x0f ) << 2 | ( currentByte >> 6 )] );
+					result.push( base64Map[currentByte & 0x3f] );
 					break;
 			}
 
@@ -439,11 +439,11 @@
 		}
 
 		if ( byteNum === 0 ) {
-			result.push( base64Map$1[( previousByte & 3 ) << 4] );
+			result.push( base64Map[( previousByte & 3 ) << 4] );
 			result.push( '==' );
 		} else {
 			if ( byteNum === 1 ) {
-				result.push( base64Map$1[( previousByte & 0x0f ) << 2] );
+				result.push( base64Map[( previousByte & 0x0f ) << 2] );
 				result.push( '=' );
 			}
 		}

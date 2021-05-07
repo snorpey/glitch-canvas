@@ -1,6 +1,6 @@
 var fs = require( 'fs' );
 var { rollup } = require( 'rollup' );
-var buble = require( 'rollup-plugin-buble' );
+var buble = require( '@rollup/plugin-buble' );
 var UglifyJS = require( 'uglify-js' );
 var UglifyES = require( 'uglify-es' );
 var replace = require( 'rollup-plugin-replace' );
