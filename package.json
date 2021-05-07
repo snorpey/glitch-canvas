@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/snorpey/glitch-canvas#readme",
   "dependencies": {
-    "canvas": "^2.6.1"
+    "canvas": "^2.7.0"
   },
   "devDependencies": {
     "acorn": "^7.1.1",
@@ -49,14 +49,14 @@
     "commander": "^5.0.0",
     "es6-promise": "^4.2.8",
     "expect.js": "^0.3.1",
-    "karma": "^5.0.0",
+    "karma": "^6.3.2",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.1.0",
-    "karma-mocha": "^2.0.0",
-    "mocha": "^8.2.1",
+    "karma-mocha": "^2.0.1",
+    "mocha": "^8.4.0",
     "object-assign": "^4.1.1",
-    "rollup": "^2.0.0",
-    "rollup-plugin-buble": "^0.19.0",
+    "rollup": "^2.47.0",
+    "@rollup/plugin-buble": "^0.21.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
