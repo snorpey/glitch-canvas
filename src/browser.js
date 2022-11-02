@@ -10,149 +10,159 @@ import objectAssign from './util/object-assign.js';
 
 // constructing an object that allows for a chained interface.
 // for example stuff like:
-// 
+//
 // glitch( params )
 //     .toImage( img )
 //     .toImageData()
-// 
+//
 // etc...
 
-export default function glitch ( params ) {
-	params = sanitizeInput( params );
+export default function glitch(params) {
+	params = sanitizeInput(params);
 
 	let inputFn;
 	let outputFn;
 
-	const worker = new Worker( 'workers/glitchWorker.js' );
-	
+	const worker = new Worker('workers/glitchWorker.js');
+
 	const api = { getParams, getInput, getOutput };
 	const inputMethods = { fromImageData, fromImage };
 	const outputMethods = { toImage, toDataURL, toImageData };
 
-	function getParams () {
+	function getParams() {
 		return params;
 	}
 
-	function getInput () {
-		const result = objectAssign( { }, api );
+	function getInput() {
+		const result = objectAssign({}, api);
 
-		if ( ! inputFn ) {
-			objectAssign( result, inputMethods );
+		if (!inputFn) {
+			objectAssign(result, inputMethods);
 		}
 
 		return result;
 	}
 
-	function getOutput () {
-		const result = objectAssign( { }, api );
+	function getOutput() {
+		const result = objectAssign({}, api);
 
-		if ( ! outputFn ) {
-			objectAssign( result, outputMethods );
+		if (!outputFn) {
+			objectAssign(result, outputMethods);
 		}
 
 		return result;
 	}
 
-	function noTransform ( x ) { return x; }
+	function noTransform(x) {
+		return x;
+	}
 
-	function fromImage ( inputOptions ) { return setInput( imageToImageData, inputOptions ); }
-	function fromImageData ( inputOptions ) { return setInput( noTransform, inputOptions ); }
+	function fromImage(inputOptions) {
+		return setInput(imageToImageData, inputOptions);
+	}
+	function fromImageData(inputOptions) {
+		return setInput(noTransform, inputOptions);
+	}
 
-	function toDataURL ( outputOptions ) { return setOutput( noTransform ); }
-	function toImage ( outputOptions ) { return setOutput( base64URLToImage, outputOptions, true ); }
-	function toImageData ( outputOptions ) { return setOutput( base64URLToImageData, outputOptions, true ); }
+	function toDataURL(outputOptions) {
+		return setOutput(noTransform);
+	}
+	function toImage(outputOptions) {
+		return setOutput(base64URLToImage, outputOptions, true);
+	}
+	function toImageData(outputOptions) {
+		return setOutput(base64URLToImageData, outputOptions, true);
+	}
 
-	function setInput ( fn, inputOptions, canResolve ) {		
+	function setInput(fn, inputOptions, canResolve) {
 		inputFn = () => {
-			return new Promise( ( resolve, reject ) => {
-				if ( canResolve ) {
-					fn( inputOptions, resolve, reject )
+			return new Promise((resolve, reject) => {
+				if (canResolve) {
+					fn(inputOptions, resolve, reject);
 				} else {
-					if ( fn === noTransform ) {
-						resolve( inputOptions );
+					if (fn === noTransform) {
+						resolve(inputOptions);
 					} else {
 						try {
-							resolve( fn( inputOptions, resolve, reject ) );
-						} catch ( err ) {
-							reject( err );
+							resolve(fn(inputOptions, resolve, reject));
+						} catch (err) {
+							reject(err);
 						}
 					}
 				}
-			} );
+			});
 		};
 
-		if ( isReady() ) {
+		if (isReady()) {
 			return getResult();
 		} else {
 			return getOutput();
 		}
 	}
 
-	function setOutput ( fn, outputOptions, canResolve ) {
+	function setOutput(fn, outputOptions, canResolve) {
 		outputFn = base64URL => {
-			return new Promise( ( resolve, reject ) => {
-				if ( canResolve ) {
-					fn( base64URL, outputOptions, resolve, reject );
+			return new Promise((resolve, reject) => {
+				if (canResolve) {
+					fn(base64URL, outputOptions, resolve, reject);
 				} else {
-					if ( fn === noTransform ) {
-						resolve( base64URL );
+					if (fn === noTransform) {
+						resolve(base64URL);
 					} else {
-						fn( base64URL, outputOptions )
-							.then( resolve, reject );
+						fn(base64URL, outputOptions).then(resolve, reject);
 					}
 				}
-			} );
+			});
 		};
 
-		if ( isReady() ) {
+		if (isReady()) {
 			return getResult();
 		} else {
 			return getInput();
 		}
 	}
 
-	function isReady () {
+	function isReady() {
 		return inputFn && outputFn;
 	}
 
-	function getResult () {
-		return new Promise( ( resolve, reject ) => {
+	function getResult() {
+		return new Promise((resolve, reject) => {
 			inputFn()
-				.then( imageData => {
-					return glitch( imageData, params );
-				}, reject )
-				.then( base64URL => {
-					outputFn( base64URL )
-						.then( resolve, reject );
-				}, reject );
-		} );
+				.then(imageData => {
+					return glitch(imageData, params);
+				}, reject)
+				.then(base64URL => {
+					outputFn(base64URL).then(resolve, reject);
+				}, reject);
+		});
 	}
 
-	function glitch ( imageData, params ) {
-		return new Promise( ( resolve, reject ) => {
-			imageDataToBase64( imageData, params.quality )
-				.then( base64URL => {
-					return glitchInWorker( imageData, base64URL, params );
-				}, reject )
-				.then( resolve, reject );
-		} );
+	function glitch(imageData, params) {
+		return new Promise((resolve, reject) => {
+			imageDataToBase64(imageData, params.quality)
+				.then(base64URL => {
+					return glitchInWorker(imageData, base64URL, params);
+				}, reject)
+				.then(resolve, reject);
+		});
 	}
 
-	function glitchInWorker ( imageData, base64URL, params ) {
-		return new Promise( ( resolve, reject ) => {
-			worker.addEventListener( 'message', event => {
-				if ( event.data && event.data.base64URL ) {
-					resolve( event.data.base64URL );
+	function glitchInWorker(imageData, base64URL, params) {
+		return new Promise((resolve, reject) => {
+			worker.addEventListener('message', event => {
+				if (event.data && event.data.base64URL) {
+					resolve(event.data.base64URL);
 				} else {
-					if ( event.data && event.data.err ) {
-						reject( event.data.err );
+					if (event.data && event.data.err) {
+						reject(event.data.err);
 					} else {
-						reject( event );
+						reject(event);
 					}
 				}
-			} );
+			});
 
-			worker.postMessage( {
+			worker.postMessage({
 				params: params,
 				base64URL: base64URL,
 				imageData: imageData,
@@ -160,9 +170,9 @@ export default function glitch ( params ) {
 				// phantomjs tends to forget about those two
 				// so we send them separately
 				imageDataWidth: imageData.width,
-				imageDataHeight: imageData.height
-			} );
-		} );
+				imageDataHeight: imageData.height,
+			});
+		});
 	}
 
 	return getInput();

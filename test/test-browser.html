@@ -1,322 +1,325 @@
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<title>glitch-canvas browser tests</title>
-		<link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
-	</head>
-	<body>
-		<div id="mocha"></div>
-		<script src="../dist/glitch-canvas-browser-with-polyfills.js"></script>
-		<script src="../node_modules/mocha/mocha.js"></script>
-		<script src="../node_modules/expect.js/index.js"></script>
-		<script>
-/*global describe, it, expect, mocha, mochaPhantomJS, initMochaPhantomJS, glitch*/
-if (typeof initMochaPhantomJS === 'function') {
-	initMochaPhantomJS();
-}
-mocha.ui( 'bdd' ); 
-mocha.reporter( 'html' );
 
-var defaultParams = {
-	amount:     35,
-	iterations: 20,
-	quality:    30,
-	seed:       25
-};
+<head>
+	<meta charset="utf-8" />
+	<title>glitch-canvas browser tests</title>
+	<link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
 
-var imagePath = '../examples/img/lincoln.jpg';
+<body>
+	<div id="mocha"></div>
+	<script src="../dist/glitch-canvas-browser-with-polyfills.js"></script>
+	<script src="../node_modules/mocha/mocha.js"></script>
+	<script src="../node_modules/expect.js/index.js"></script>
+	<script>
+		/*global describe, it, expect, mocha, mochaPhantomJS, initMochaPhantomJS, glitch*/
+		if (typeof initMochaPhantomJS === 'function') {
+			initMochaPhantomJS();
+		}
+		mocha.ui('bdd');
+		mocha.reporter('html');
 
-describe( 'browser tests for glitch-canvas', function () {
-	it ( 'should add a global function named "glitch"', function () {
-		expect( glitch ).to.be.a( 'function' );
-	} );
+		var defaultParams = {
+			amount: 35,
+			iterations: 20,
+			quality: 30,
+			seed: 25
+		};
 
-	it ( 'should return an object', function () {
-		expect( glitch() ).to.be.an( 'object' );
-	} );
+		var imagePath = '../examples/img/lincoln.jpg';
 
-	it ( 'should return all input methods available in the browser', function () {
-		var g = glitch();
-		expect( g.fromImage ).to.be.a( 'function' );
-		expect( g.fromImageData ).to.be.a( 'function' );
-	} );
+		describe('browser tests for glitch-canvas', function () {
+			it('should add a global function named "glitch"', function () {
+				expect(glitch).to.be.a('function');
+			});
 
-	it ( 'should have a getParams method', function () {
-		expect( glitch().getParams ).to.be.a( 'function' );
-	} );
+			it('should return an object', function () {
+				expect(glitch()).to.be.an('object');
+			});
 
-// getParams()
+			it('should return all input methods available in the browser', function () {
+				var g = glitch();
+				expect(g.fromImage).to.be.a('function');
+				expect(g.fromImageData).to.be.a('function');
+			});
 
-	describe( '#getParams()', function () {
-		it ( 'should return an object with all parameters', function () {
-			var params = glitch().getParams();
-			expect( params.amount ).to.be.a( 'number' );
-			expect( params.iterations ).to.be.a( 'number' );
-			expect( params.quality ).to.be.a( 'number' );
-			expect( params.seed ).to.be.a( 'number' );
-		} );
-		
-		it ( 'should set the default no parameters are submitted', function () {
-			var params = glitch().getParams();
+			it('should have a getParams method', function () {
+				expect(glitch().getParams).to.be.a('function');
+			});
 
-			for ( var key in defaultParams ) {
-				expect( params[key] ).to.be( defaultParams[key] );
-			}
-		} );
+			// getParams()
 
-		it ( 'should add missing parameters', function () {
-			var params = glitch( { amount: 10, blur: 90 } ).getParams();
+			describe('#getParams()', function () {
+				it('should return an object with all parameters', function () {
+					var params = glitch().getParams();
+					expect(params.amount).to.be.a('number');
+					expect(params.iterations).to.be.a('number');
+					expect(params.quality).to.be.a('number');
+					expect(params.seed).to.be.a('number');
+				});
 
-			for ( var key in defaultParams ) {
-				expect( params[key] ).not.to.be( 'undefined' );
-			}	
-		} );
+				it('should set the default no parameters are submitted', function () {
+					var params = glitch().getParams();
 
-		it ( 'should clamp the parameters', function () {
-			var params = glitch( { amount: 300, iterations: -23, quality: 1023.2, seed: 0 } ).getParams();
-
-			for ( var key in defaultParams ) {
-				expect( params[key] ).to.be.within( 0, 100 );
-			}
-		} );
-	} );
-
-	it ( 'should not have a fromBuffer method', function () {
-		expect( glitch().fromBuffer ).to.be.a( 'undefined' );
-	} );
-
-	describe( 'Asynchronous Methods', function () {
-		it ( 'should have a fromImage method', function () {
-			expect( glitch().fromImage ).to.be.a( 'function' );
-		} );
-
-		describe( '#fromImage()', function () {
-			it ( 'should accept a loaded image as parameter', function ( done ) {
-				this.timeout( 20000 );
-
-				loadImage( done, function ( img ) {
-					var failed = false;
-					
-					glitch()
-						.fromImage( img )
-						.toDataURL()
-						.then ( function ( res ) {
-							failed = false;
-							check();
-						}, function ( err ) {
-							failed = true;
-							check();
-						} );
-
-					function check () {
-						expect( failed ).to.be( false );
-						done();
+					for (var key in defaultParams) {
+						expect(params[key]).to.be(defaultParams[key]);
 					}
-				} );
-			} );
+				});
 
-			it ( 'should throw an error if an image was not loaded', function ( done ) {
-				var img = new Image();
-				var failed = false;
-				glitch()
-					.fromImage( img )
-					.toDataURL()
-					.then ( function ( res ) {
-						failed = false;
-						check();
-					}, function ( err ) {
-						failed = true;
-						check();
-					} );
+				it('should add missing parameters', function () {
+					var params = glitch({ amount: 10, blur: 90 }).getParams();
 
-				function check () {
-					expect( failed ).to.be( true );
-					done();
-				}
-			} );
-		} );
-
-		// fromImageData
-
-		it ( 'should have a fromImageData method', function () {
-			expect( glitch().fromImageData ).to.be.a( 'function' );
-		} );
-		
-		describe( '#fromImageData()', function () {
-			it ( 'should be able to handle an imageData object', function ( done ) {
-				this.timeout( 20000 );
-
-				loadImage( done, function ( img ) {
-					var imageData = imageToImageData( img );
-
-					var failed = false;
-
-					glitch()
-						.fromImageData( imageData )
-						.toDataURL()
-						.then ( function ( res ) {
-							failed = false;
-							check();
-						}, function ( err ) {
-							failed = true;
-							check( err );
-						} );
-
-					function check ( err ) {
-						expect( failed ).to.be( false );
-						done( err );
+					for (var key in defaultParams) {
+						expect(params[key]).not.to.be('undefined');
 					}
-				} );
-			} );
+				});
 
-			it ( 'should throw an error when provided with corrupt imageData object', function ( done ) {
-				this.timeout( 10000 );
+				it('should clamp the parameters', function () {
+					var params = glitch({ amount: 300, iterations: -23, quality: 1023.2, seed: 0 }).getParams();
 
-				var failed = false;
-					glitch()
-						.fromImageData( { width: 0, data: 'LOL', height: 10 } )
-						.toDataURL()
-						.then ( function ( res ) {
-							failed = false;
-							check();
-						}, function ( err ) {
-							failed = true;
-							check();
-						} );
-
-					function check () {
-						expect( failed ).to.be( true );
-						done();
+					for (var key in defaultParams) {
+						expect(params[key]).to.be.within(0, 100);
 					}
-			} );
+				});
+			});
 
-			it ( 'should throw an error when provided with no imageData object', function ( done ) {
-				this.timeout( 10000 );
+			it('should not have a fromBuffer method', function () {
+				expect(glitch().fromBuffer).to.be.a('undefined');
+			});
 
-				var failed = false;
-					glitch()
-						.fromImageData()
-						.toDataURL()
-						.then ( function ( res ) {
-							failed = false;
-							check();
-						}, function ( err ) {
-							failed = true;
-							check();
-						} );
+			describe('Asynchronous Methods', function () {
+				it('should have a fromImage method', function () {
+					expect(glitch().fromImage).to.be.a('function');
+				});
 
-					function check () {
-						expect( failed ).to.be( true );
-						done();
-					}
-			} );
-		} );
+				describe('#fromImage()', function () {
+					it('should accept a loaded image as parameter', function (done) {
+						this.timeout(20000);
 
-		// toDataURL
-	
-		it ( 'should have a toDataURL method', function () {
-			expect( glitch().fromImage().toDataURL ).to.be.a( 'function' );
-		} );
+						loadImage(done, function (img) {
+							var failed = false;
 
-		describe( '#toDataURL()', function () {
-			it ( 'should return a dataURL', function ( done ) {
-				this.timeout( 10000 );
+							glitch()
+								.fromImage(img)
+								.toDataURL()
+								.then(function (res) {
+									failed = false;
+									check();
+								}, function (err) {
+									failed = true;
+									check();
+								});
 
-				loadImage( done, function ( img ) {
-					glitch()
-						.fromImage( img )
-						.toDataURL()
-						.then( function ( url ) {
-							expect( url ).to.be.a( 'string' );
-							expect( url.length ).to.be.greaterThan( 21 );
-							expect( url.indexOf( 'data:image/jpeg;base64' ) ).to.be( 0 );
+							function check() {
+								expect(failed).to.be(false);
+								done();
+							}
+						});
+					});
+
+					it('should throw an error if an image was not loaded', function (done) {
+						var img = new Image();
+						var failed = false;
+						glitch()
+							.fromImage(img)
+							.toDataURL()
+							.then(function (res) {
+								failed = false;
+								check();
+							}, function (err) {
+								failed = true;
+								check();
+							});
+
+						function check() {
+							expect(failed).to.be(true);
 							done();
-						}, done );
-				} );
-			} );
-		} );
+						}
+					});
+				});
 
-		// toImageData
-		
-		it ( 'should have a toImageData method', function () {
-			expect( glitch().fromImage().toImageData ).to.be.a( 'function' );
-		} );
+				// fromImageData
 
-		describe( '#toImageData()', function () {
-			it ( 'should return an imageData object', function ( done ) {
-				this.timeout( 10000 );
+				it('should have a fromImageData method', function () {
+					expect(glitch().fromImageData).to.be.a('function');
+				});
 
-				loadImage( done, function ( img ) {
-					glitch()
-						.fromImage( img )
-						.toImageData()
-						.then ( function ( imageData ) {
-							expect( imageData ).to.be.an( 'object' );
-							expect( imageData.width ).to.be.a( 'number' );
-							expect( imageData.height ).to.be.a( 'number' );
-							expect( imageData.data ).not.to.be( 'undefined' );
-							expect( imageData.data.length ).to.be.greaterThan( 0 );
-							
+				describe('#fromImageData()', function () {
+					it('should be able to handle an imageData object', function (done) {
+						this.timeout(20000);
+
+						loadImage(done, function (img) {
+							var imageData = imageToImageData(img);
+
+							var failed = false;
+
+							glitch()
+								.fromImageData(imageData)
+								.toDataURL()
+								.then(function (res) {
+									failed = false;
+									check();
+								}, function (err) {
+									failed = true;
+									check(err);
+								});
+
+							function check(err) {
+								expect(failed).to.be(false);
+								done(err);
+							}
+						});
+					});
+
+					it('should throw an error when provided with corrupt imageData object', function (done) {
+						this.timeout(10000);
+
+						var failed = false;
+						glitch()
+							.fromImageData({ width: 0, data: 'LOL', height: 10 })
+							.toDataURL()
+							.then(function (res) {
+								failed = false;
+								check();
+							}, function (err) {
+								failed = true;
+								check();
+							});
+
+						function check() {
+							expect(failed).to.be(true);
 							done();
-						}, done );
-				} );
-			} );
-		} );
+						}
+					});
 
-		// toImage
-		
-		it ( 'should have a toImage method', function () {
-			expect( glitch().fromImage().toImage ).to.be.a( 'function' );
-		} );
+					it('should throw an error when provided with no imageData object', function (done) {
+						this.timeout(10000);
 
-		describe( '#toImage()', function () {
-			it ( 'should return an image element', function ( done ) {
-				this.timeout( 5000 );
+						var failed = false;
+						glitch()
+							.fromImageData()
+							.toDataURL()
+							.then(function (res) {
+								failed = false;
+								check();
+							}, function (err) {
+								failed = true;
+								check();
+							});
 
-				loadImage( done, function ( img ) {
-					glitch()
-						.fromImage( img )
-						.toImage()
-						.then ( function ( img ) {
-							expect( img ).to.be.an( 'object' );
-							expect( img.naturalWidth ).to.be.a( 'number' );
-							expect( img.naturalHeight ).to.be.a( 'number' );
-							
+						function check() {
+							expect(failed).to.be(true);
 							done();
-						}, done );
-				} );
-			} );
-		} );
-	} );
-} );
+						}
+					});
+				});
 
-function loadImage ( err, callback ) {
-	var img = new Image();
+				// toDataURL
 
-	img.onload = function () {
-		callback( img );
-	};
+				it('should have a toDataURL method', function () {
+					expect(glitch().fromImage().toDataURL).to.be.a('function');
+				});
 
-	img.onerror = err;
-	img.src = imagePath;
-}
+				describe('#toDataURL()', function () {
+					it('should return a dataURL', function (done) {
+						this.timeout(10000);
 
-function imageToImageData ( img ) {
-	var canvas = document.createElement( 'canvas' );
-	canvas.width = img.naturalWidth;
-	canvas.height = img.naturalHeight;
-			
-	var ctx = canvas.getContext( '2d' );
-	ctx.drawImage( img, 0, 0 );
+						loadImage(done, function (img) {
+							glitch()
+								.fromImage(img)
+								.toDataURL()
+								.then(function (url) {
+									expect(url).to.be.a('string');
+									expect(url.length).to.be.greaterThan(21);
+									expect(url.indexOf('data:image/jpeg;base64')).to.be(0);
+									done();
+								}, done);
+						});
+					});
+				});
 
-	return ctx.getImageData( 0, 0, img.naturalWidth, img.naturalHeight );
-}
+				// toImageData
 
-if ( window.mochaPhantomJS ) {
-	mochaPhantomJS.run();
-} else {
-	mocha.run();
-}
-		</script>
-	</body>
+				it('should have a toImageData method', function () {
+					expect(glitch().fromImage().toImageData).to.be.a('function');
+				});
+
+				describe('#toImageData()', function () {
+					it('should return an imageData object', function (done) {
+						this.timeout(10000);
+
+						loadImage(done, function (img) {
+							glitch()
+								.fromImage(img)
+								.toImageData()
+								.then(function (imageData) {
+									expect(imageData).to.be.an('object');
+									expect(imageData.width).to.be.a('number');
+									expect(imageData.height).to.be.a('number');
+									expect(imageData.data).not.to.be('undefined');
+									expect(imageData.data.length).to.be.greaterThan(0);
+
+									done();
+								}, done);
+						});
+					});
+				});
+
+				// toImage
+
+				it('should have a toImage method', function () {
+					expect(glitch().fromImage().toImage).to.be.a('function');
+				});
+
+				describe('#toImage()', function () {
+					it('should return an image element', function (done) {
+						this.timeout(5000);
+
+						loadImage(done, function (img) {
+							glitch()
+								.fromImage(img)
+								.toImage()
+								.then(function (img) {
+									expect(img).to.be.an('object');
+									expect(img.naturalWidth).to.be.a('number');
+									expect(img.naturalHeight).to.be.a('number');
+
+									done();
+								}, done);
+						});
+					});
+				});
+			});
+		});
+
+		function loadImage(err, callback) {
+			var img = new Image();
+
+			img.onload = function () {
+				callback(img);
+			};
+
+			img.onerror = err;
+			img.src = imagePath;
+		}
+
+		function imageToImageData(img) {
+			var canvas = document.createElement('canvas');
+			canvas.width = img.naturalWidth;
+			canvas.height = img.naturalHeight;
+
+			var ctx = canvas.getContext('2d');
+			ctx.drawImage(img, 0, 0);
+
+			return ctx.getImageData(0, 0, img.naturalWidth, img.naturalHeight);
+		}
+
+		if (window.mochaPhantomJS) {
+			mochaPhantomJS.run();
+		} else {
+			mocha.run();
+		}
+	</script>
+</body>
+
 </html>

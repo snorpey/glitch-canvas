@@ -12,7 +12,7 @@
 		<script src="./node_modules/mocha/mocha.js"></script>
 		<script src="./node_modules/chai/chai.js"></script>
 		<script>
-			mocha.ui( 'bdd' ); 
+			mocha.ui( 'bdd' );
 			mocha.reporter( 'html' );
 			var expect = chai.expect;
 		</script>
@@ -22,7 +22,7 @@
 			{
 				mochaPhantomJS.run();
 			}
-			
+
 			else
 			{
 				mocha.run();

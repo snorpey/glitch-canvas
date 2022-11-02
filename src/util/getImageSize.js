@@ -1,6 +1,6 @@
-export default function ( image ) {
+export default function (image) {
 	return {
 		width: image.width || image.naturalWidth,
-		height: image.height || image.naturalHeight
+		height: image.height || image.naturalHeight,
 	};
 }
